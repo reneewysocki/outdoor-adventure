@@ -1,10 +1,10 @@
-var longitute = -97.0124199; 
-var lattitude = 32.820351;
+var longitute = -96.7844135; 
+var lattitude = 32.8448345;
 
 //set up openweather api 
 var weatherAPIkey = "63ad6cfdee5ea624323fed889a2d525d";
 //var currentLocation = "Dallas,Texas"
-var weatherqueryURL = "http://api.openweathermap.org/data/2.5/find?lat=" + lattitude + "&lon=" + longitute +"&cnt=10&appid=" + weatherAPIkey;
+var weatherqueryURL = "http://api.openweathermap.org/data/2.5/find?lat=" + lattitude + "&lon=" + longitute +"&cnt=1&appid=" + weatherAPIkey;
 
 
 $.ajax({
@@ -46,7 +46,7 @@ var config = {
      var marker = new google.maps.Marker({
        map: map,
        position: myLatLng,
-       title: 'Hello World!'
+       title: 'Activities Are Here!'
      });
   }
  
