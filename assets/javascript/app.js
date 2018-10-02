@@ -19,7 +19,7 @@ $.ajax({
 
 //initialize firebase
 var config = {
-    apiKey: "AIzaSyBORNjA5-m2BsCc9HESu5po2VRfx30lUx4",
+    apiKey: "AIzaSyCGcE5jmaNXlSOnkF9hz6oYTFhQl3qPFaU",
     authDomain: "outdoor-adventure-dc61e.firebaseapp.com",
     databaseURL: "https://outdoor-adventure-dc61e.firebaseio.com",
     projectId: "outdoor-adventure-dc61e",
