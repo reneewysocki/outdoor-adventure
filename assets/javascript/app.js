@@ -30,7 +30,7 @@ var config = {
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
           center: {lat:  32.8448345, lng: -96.7844135},
-          zoom: 6
+          zoom: 10
         });
         infoWindow = new google.maps.InfoWindow;
 
@@ -42,7 +42,7 @@ var config = {
               lng: position.coords.longitude
             };
             infoWindow.setPosition(pos);
-            infoWindow.setContent('Location found.');
+            infoWindow.setContent('Current Location.');
             infoWindow.open(map);
             map.setCenter(pos);
             console.log(position.coords.latitude);
@@ -54,6 +54,19 @@ var config = {
               method: "GET"
             }).then(function(response) {
                 console.log(response);
+                var currentLocationName =  response.list[0].name;
+                var currentLocationTempKelvin =  response.list[0].main.temp;
+                console.log(currentLocationTempKelvin);
+                var currentLocationTempFahr = Math.floor(((currentLocationTempKelvin-273.15)*1.8) + 32)
+                console.log(currentLocationTempFahr);
+                var currentWeatherDis =  response.list[0].weather[0].description;
+                var currentWeatherIcon = response.list[0].weather[0].icon;
+                var currentWeatherIconURL = "http://openweathermap.org/img/w/" + currentWeatherIcon + ".png";
+                $("#location").append("<b>" + currentLocationName + "</b>");
+                $("#weather").append("<img id='current-weather-icon' src='" + currentWeatherIconURL  + "'>");
+                $("#weather").append("<div>Temperature: " + currentLocationTempFahr + "°</div>");
+                // $("#weather").append("<div>Weather: " + currentWeatherDis + " </div>");
+                
             });
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
@@ -72,13 +85,3 @@ var config = {
                               'Error: Your browser doesn\'t support geolocation.');
         infoWindow.open(map);
       }
-
-
-
-
-// $.ajax({
-//   url: weatherqueryURL,
-//   method: "GET"
-// }).then(function(response) {
-//     console.log("Weather: " + response);
-// });
