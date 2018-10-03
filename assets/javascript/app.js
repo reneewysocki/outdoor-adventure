@@ -21,6 +21,7 @@ var trailsqueryURL = 'https://trailapi-trailapi.p.mashape.com/trails/explore/' +
       } 
       }).then(function(response) {
           console.log(response);
+      });
 //set up national parks api 
 
 var nationalParksQueryURL = "https://developer.nps.gov/api/v1/parks?stateCode=tx&api_key=" + nationalParksAPIkey;
@@ -110,5 +111,4 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     'Error: The Geolocation service failed.' :
     'Error: Your browser doesn\'t support geolocation.');
   infoWindow.open(map);
-};
-});
+}
