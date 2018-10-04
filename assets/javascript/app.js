@@ -83,7 +83,7 @@ function initMap() {
         $("#weather").append("<div>" + currentWeatherDis + " </div>");
         $("#weather").append("<div>Temperature: " + currentLocationTempFahr + "°</div>");
         // set up trails api
-        var trailsqueryURL = 'https://trailapi-trailapi.p.mashape.com/trails/explore/' + '?lat=' + currentLatitude + '%2C&lon=' + currentLongitude + '&per_page=10&radius=25';
+        var trailsqueryURL = 'https://trailapi-trailapi.p.mashape.com/trails/explore/' + '?lat=' + currentLatitude + '%2C&lon=' + currentLongitude + '&per_page=50';
 
         $.ajax({
           url: trailsqueryURL,
@@ -95,6 +95,15 @@ function initMap() {
           }
         }).then(function (response) {
           console.log(response);
+          //loop through response 
+          for (var i = 0; i < response.data.length; i++) {
+            var trailPositionLat = parseFloat(response.data[i].lat);
+            var trailPositionLon = parseFloat(response.data[i].lon);
+            console.log(trailPositionLat, trailPositionLon)
+           var trailPosition = {lat: trailPositionLat, lng: trailPositionLon};
+           var marker = new google.maps.Marker({position: trailPosition, map: map});
+          }
+          //plot points on map
         });
       });
     }, function () {
