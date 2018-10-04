@@ -4,7 +4,7 @@ var places; // a variable to hold places
 
 
 var weatherAPIkey = "63ad6cfdee5ea624323fed889a2d525d";
-// var nationalParksAPIkey = "Myd9CKal7VJIrMYyOYXHKQHZkEKIXZfMT7wT5xds";
+ var nationalParksAPIkey = "Myd9CKal7VJIrMYyOYXHKQHZkEKIXZfMT7wT5xds";
 
 $("#results").hide();
 
@@ -106,33 +106,33 @@ function initMap() {
             var trailURL = response.data[i].url;
             //console.log(trailName, trailPositionLat, trailPositionLon)
             var trailPosition = { lat: trailPositionLat, lng: trailPositionLon };
-            var contentString = '<div id="content">'+
-            '<div id="' + trailName + '">'+
-            '</div>'+
-            '<p id="firstHeading" class="firstHeading">' + trailName + '</p>'+
-            '<div id="bodyContent">'+
-            '<p> Rating: ' + trailRating + '</p>' +
-            '<p> Difficulty: ' + trailDifficulty + '</p>' +
-            '<p Description: ' + trailDescription + '</p>' +
-            '<p><a href="' + trailURL + '">Click Here for More Information</a> '+
-            '</p>'+
-            '</div>'+
-            '</div>';
+            var contentString = '<div id="content">' +
+              '<div id="' + trailName + '">' +
+              '</div>' +
+              '<p id="firstHeading" class="firstHeading">' + trailName + '</p>' +
+              '<div id="bodyContent">' +
+              '<p> Rating: ' + trailRating + '</p>' +
+              '<p> Difficulty: ' + trailDifficulty + '</p>' +
+              '<p Description: ' + trailDescription + '</p>' +
+              '<p><a href="' + trailURL + '">Click Here for More Information</a> ' +
+              '</p>' +
+              '</div>' +
+              '</div>';
+              createMarker(trailPosition,trailName,contentString);
+            //({
+            //   content: contentString
+            // });
 
-            var infowindow = new google.maps.InfoWindow({
-              content: contentString
-            });
+            // var marker = new google.maps.Marker({
+            //   position: trailPosition,
+            //   map: map,
+            //   title: trailName,
+            // });
+            // marker.addListener('click', function () {
+            //   infowindow.open(map, marker);
+            // });
 
-            var marker = new google.maps.Marker({
-              position: trailPosition,
-              map: map,
-              title: trailName,
-            });
-             marker.addListener('click', function() {
-               infowindow.open(map, marker);
-            });
 
-            
           }
         });
       });
@@ -154,4 +154,18 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     'Error: The Geolocation service failed.' :
     'Error: Your browser doesn\'t support geolocation.');
   infoWindow.open(map);
+};
+
+function createMarker(trailPosition,trailName,contentString) {
+  var marker = new google.maps.Marker({
+    position: trailPosition,
+    title: trailName,
+    map: map
+  });
+  var infowindow = new google.maps.InfoWindow
+  google.maps.event.addListener(marker, 'click', function () {
+    infowindow.setContent(contentString);
+    infowindow.open(map, marker);
+  });
+
 }
