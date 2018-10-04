@@ -1,9 +1,29 @@
+// Global variables
+var trails; // a variable to hold trails
+var places; // a variable to hold places
+
+
 var weatherAPIkey = "63ad6cfdee5ea624323fed889a2d525d";
 var nationalParksAPIkey = "Myd9CKal7VJIrMYyOYXHKQHZkEKIXZfMT7wT5xds";
 
 $("#results").hide();
 
-//set up trails api 
+// set up trails api
+var trailsqueryURL = 'https://trailapi-trailapi.p.mashape.com/trails/explore/' + '?lat=32.777977%2C&lon=-96.796215&per_page=10&radius=25';
+     
+      $.ajax({
+        url: trailsqueryURL,
+        method: "GET",
+        headers: {
+          "X-Mashape-Key" :"dZJGfLx5hNmshNppywXnsDamxgDPp1RzSf2jsnYe48JNSRCtXc",
+          "Accept": "application/json"
+        
+      } 
+      }).then(function(response) {
+          console.log(response);
+      });
+//set up national parks api 
+
 var nationalParksQueryURL = "https://developer.nps.gov/api/v1/parks?stateCode=tx&api_key=" + nationalParksAPIkey;
 
     // Here we run our AJAX call to the OpenWeatherMap API
@@ -92,4 +112,3 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     'Error: Your browser doesn\'t support geolocation.');
   infoWindow.open(map);
 }
-
