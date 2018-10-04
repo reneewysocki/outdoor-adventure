@@ -4,23 +4,23 @@ var places; // a variable to hold places
 
 
 var weatherAPIkey = "63ad6cfdee5ea624323fed889a2d525d";
-var nationalParksAPIkey = "Myd9CKal7VJIrMYyOYXHKQHZkEKIXZfMT7wT5xds";
+// var nationalParksAPIkey = "Myd9CKal7VJIrMYyOYXHKQHZkEKIXZfMT7wT5xds";
 
 $("#results").hide();
 
 //set up national parks api 
 
-var nationalParksQueryURL = "https://developer.nps.gov/api/v1/parks?stateCode=tx&api_key=" + nationalParksAPIkey;
+// var nationalParksQueryURL = "https://developer.nps.gov/api/v1/parks?stateCode=tx&api_key=" + nationalParksAPIkey;
 
-// Here we run our AJAX call to the OpenWeatherMap API
-$.ajax({
-  url: nationalParksQueryURL,
-  method: "GET"
-})
-  // We store all of the retrieved data inside of an object called "response"
-  .then(function (response) {
-    console.log(response);
-  });
+// // Here we run our AJAX call to the OpenWeatherMap API
+// $.ajax({
+//   url: nationalParksQueryURL,
+//   method: "GET"
+// })
+//   // We store all of the retrieved data inside of an object called "response"
+//   .then(function (response) {
+//     console.log(response);
+//   });
 
 //initialize firebase
 var config = {
@@ -95,15 +95,45 @@ function initMap() {
           }
         }).then(function (response) {
           console.log(response);
-          //loop through response 
+          //plots trail points on map 
           for (var i = 0; i < response.data.length; i++) {
+            var trailName = response.data[i].name;
+            var trailDescription = response.data[i].description;
             var trailPositionLat = parseFloat(response.data[i].lat);
             var trailPositionLon = parseFloat(response.data[i].lon);
-            console.log(trailPositionLat, trailPositionLon)
-           var trailPosition = {lat: trailPositionLat, lng: trailPositionLon};
-           var marker = new google.maps.Marker({position: trailPosition, map: map});
+            var trailRating = response.data[i].rating;
+            var trailDifficulty = response.data[i].difficulty;
+            var trailURL = response.data[i].url;
+            //console.log(trailName, trailPositionLat, trailPositionLon)
+            var trailPosition = { lat: trailPositionLat, lng: trailPositionLon };
+            var contentString = '<div id="content">'+
+            '<div id="' + trailName + '">'+
+            '</div>'+
+            '<p id="firstHeading" class="firstHeading">' + trailName + '</p>'+
+            '<div id="bodyContent">'+
+            '<p> Rating: ' + trailRating + '</p>' +
+            '<p> Difficulty: ' + trailDifficulty + '</p>' +
+            '<p Description: ' + trailDescription + '</p>' +
+            '<p><a href="' + trailURL + '">Click Here for More Information</a> '+
+            '</p>'+
+            '</div>'+
+            '</div>';
+
+            var infowindow = new google.maps.InfoWindow({
+              content: contentString
+            });
+
+            var marker = new google.maps.Marker({
+              position: trailPosition,
+              map: map,
+              title: trailName,
+            });
+             marker.addListener('click', function() {
+               infowindow.open(map, marker);
+            });
+
+            
           }
-          //plot points on map
         });
       });
     }, function () {
