@@ -8,33 +8,19 @@ var nationalParksAPIkey = "Myd9CKal7VJIrMYyOYXHKQHZkEKIXZfMT7wT5xds";
 
 $("#results").hide();
 
-// set up trails api
-var trailsqueryURL = 'https://trailapi-trailapi.p.mashape.com/trails/explore/' + '?lat=32.777977%2C&lon=-96.796215&per_page=10&radius=25';
-     
-      $.ajax({
-        url: trailsqueryURL,
-        method: "GET",
-        headers: {
-          "X-Mashape-Key" :"dZJGfLx5hNmshNppywXnsDamxgDPp1RzSf2jsnYe48JNSRCtXc",
-          "Accept": "application/json"
-        
-      } 
-      }).then(function(response) {
-          console.log(response);
-      });
 //set up national parks api 
 
 var nationalParksQueryURL = "https://developer.nps.gov/api/v1/parks?stateCode=tx&api_key=" + nationalParksAPIkey;
 
-    // Here we run our AJAX call to the OpenWeatherMap API
-    $.ajax({
-      url: nationalParksQueryURL,
-      method: "GET"
-    })
-      // We store all of the retrieved data inside of an object called "response"
-      .then(function(response) {
-        console.log(response);
-      });
+// Here we run our AJAX call to the OpenWeatherMap API
+$.ajax({
+  url: nationalParksQueryURL,
+  method: "GET"
+})
+  // We store all of the retrieved data inside of an object called "response"
+  .then(function (response) {
+    console.log(response);
+  });
 
 //initialize firebase
 var config = {
@@ -73,8 +59,10 @@ function initMap() {
       map.setCenter(pos);
       console.log(position.coords.latitude);
       console.log(position.coords.longitude);
+      var currentLatitude = position.coords.latitude;
+      var currentLongitude = position.coords.longitude
       //set up openweather api based on maps location
-      var weatherqueryURL = "http://api.openweathermap.org/data/2.5/find?lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&cnt=1&appid=" + weatherAPIkey;
+      var weatherqueryURL = "http://api.openweathermap.org/data/2.5/find?lat=" + currentLatitude + "&lon=" + currentLongitude + "&cnt=1&appid=" + weatherAPIkey;
       $.ajax({
         url: weatherqueryURL,
         method: "GET"
@@ -94,6 +82,20 @@ function initMap() {
         $("#weather").append("<img id='current-weather-icon' src='" + currentWeatherIconURL + "'>");
         $("#weather").append("<div>" + currentWeatherDis + " </div>");
         $("#weather").append("<div>Temperature: " + currentLocationTempFahr + "°</div>");
+        // set up trails api
+        var trailsqueryURL = 'https://trailapi-trailapi.p.mashape.com/trails/explore/' + '?lat=' + currentLatitude + '%2C&lon=' + currentLongitude + '&per_page=10&radius=25';
+
+        $.ajax({
+          url: trailsqueryURL,
+          method: "GET",
+          headers: {
+            "X-Mashape-Key": "dZJGfLx5hNmshNppywXnsDamxgDPp1RzSf2jsnYe48JNSRCtXc",
+            "Accept": "application/json"
+
+          }
+        }).then(function (response) {
+          console.log(response);
+        });
       });
     }, function () {
       handleLocationError(true, infoWindow, map.getCenter());
@@ -102,6 +104,8 @@ function initMap() {
     // Browser doesn't support Geolocation
     handleLocationError(false, infoWindow, map.getCenter());
   }
+
+
 
 }
 
