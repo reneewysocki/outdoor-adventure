@@ -6,7 +6,7 @@ var places; // a variable to hold places
 var weatherAPIkey = "63ad6cfdee5ea624323fed889a2d525d";
 var nationalParksAPIkey = "Myd9CKal7VJIrMYyOYXHKQHZkEKIXZfMT7wT5xds";
 
-$("#results").hide();
+$("#sidebar").hide();
 
 //set up national parks api 
 
@@ -77,7 +77,7 @@ function initMap() {
         var currentWeatherDis = response.list[0].weather[0].description;
         var currentWeatherIcon = response.list[0].weather[0].icon;
         var currentWeatherIconURL = "http://openweathermap.org/img/w/" + currentWeatherIcon + ".png";
-        $("#results").show()
+        $("#sidebar").show();
         $("#location").append("<b>" + currentLocationName + "</b>");
         $("#weather").append("<img id='current-weather-icon' src='" + currentWeatherIconURL + "'>");
         $("#weather").append("<div>" + currentWeatherDis + " </div>");
@@ -107,6 +107,8 @@ function initMap() {
             var trailDifficulty = response.data[i].difficulty;
             var trailThumb = response.data[i].thumbnail;
             var trailURL = response.data[i].url;
+            var trailRatingPercent = ((trailRating/5) * 100) + "%";
+            console.log(trailRatingPercent);
             var markerString = '<div id="content">' +
               '<div id="' + trailName + '">' +
               '</div>' +
@@ -121,7 +123,7 @@ function initMap() {
               '</div>' +
               '</div>';
             createMarker(trailPosition, trailName, markerString);
-            listTrails(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL);
+            listTrails(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent);
           }
         });
       });
@@ -157,7 +159,7 @@ function createMarker(trailPosition, trailName, contentString) {
 
 }
 
-function listTrails(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL) {
+function listTrails(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent) {
   //gets weather for trails
   var weatherqueryURL = "http://api.openweathermap.org/data/2.5/find?lat=" + trailPositionLat + "&lon=" + trailPositionLon + "&cnt=1&appid=" + weatherAPIkey;
   
@@ -165,8 +167,6 @@ function listTrails(trailName, trailRating, trailDifficulty, trailLength, trailT
     url: weatherqueryURL,
     method: "GET"
   }).then(function (response) {
-    console.log(response);
-    
         var trailTempKelvin = response.list[0].main.temp;
         var trailTempFahr = Math.floor(((trailTempKelvin - 273.15) * 1.8) + 32)
         var trailWeatherDis = response.list[0].weather[0].description;
@@ -174,13 +174,13 @@ function listTrails(trailName, trailRating, trailDifficulty, trailLength, trailT
         var trailWeatherIconURL = "http://openweathermap.org/img/w/" + trailWeatherIcon + ".png";
         var trailWeather = "<img id='current-weather-icon' src='" + trailWeatherIconURL + "'>" 
         + "<div>" + trailTempFahr + "°</div>" 
-        + "<div>" + trailWeatherDis + " </div>" 
-      //pushes trail information to results panel
+        + "<div>" + trailWeatherDis + " </div>";
+
+        //$(".stars-fill").css( "width", trailRatingPercent + "%");
+
+      if (trailThumb === "") {
         var resultsString =
         "<div class='row trailResultsList'>" +
-        "<div class='col-4'>" +
-        "<img class='trailImage' src='" + trailThumb + "'>" +
-        "</div>" +
         "<div class='col'>" +
         "<a href='" + trailURL + "'>" +
         "<h5>" + trailName + "</h5></a>" +
@@ -189,9 +189,31 @@ function listTrails(trailName, trailRating, trailDifficulty, trailLength, trailT
         "Length: " + trailLength + "</p>" +
         "</div>" +
         "<div class='col-4'>" + trailWeather + 
-    
       "</div>"
       "</div>"
+      } else {
+        var resultsString =
+        "<div class='row trailResultsList'>" +
+        "<div class='col-4'>" +
+        "<img class='trailImage' src='" + trailThumb + "'>" +
+        "</div>" +
+        "<div class='col'>" +
+        "<a href='" + trailURL + "'>" +
+        "<h5>" + trailName + "</h5></a>" +
+        // "Rating: " + trailRating + "<br>" +
+        "<div class='stars-empty'>" + 
+        "<div class='stars-fill' style='width:" + trailRatingPercent + "'> </div>" + 
+        "</div>" + 
+        trailDifficulty + "<br>" +
+        "Length: " + trailLength + "</p>" +
+        "</div>" +
+        "<div class='col-4'>" + trailWeather + 
+      "</div>"
+      "</div>"
+      }
+
+      
+      //pushes trail information to results panel   
       $("#trails").append(resultsString);
     }
   

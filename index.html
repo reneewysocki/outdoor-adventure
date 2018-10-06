@@ -11,6 +11,8 @@
         crossorigin="anonymous">
     <!--================== CSS Stylesheet ============================-->
     <link rel="stylesheet" href="assets/css/style.css">
+    <!--================== Font Awesome Link =============================-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!--================== Firebase Link =============================-->
     <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-database.js"></script>
@@ -22,24 +24,16 @@
     <!--================== Header Area =============================-->
 
     <!--================== Main Body Content Area  =================-->
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6 col-lg-5" id="results">
-                <div class="container-fluid" id="current-location">
-                    <div id="location"> Current Location: </div>
-                    <div id="weather"></div>
-                </div>
-                <div>Trails Near You: </div> 
-                <div class="trails" id="trails"></div> 
-            </div>
-        
-        <div class="col">
-            <div id="map"></div>
-        </div>
-    </div>
-    </div>
-    </div>
 
+    <div id="sidebar">
+        <div id="currentLocationWeather">
+            <div id="location"> Current Location: </div>
+            <div id="weather"></div>
+        </div>
+        <h5>Trails Near You: </h5> 
+        <div class="trails" id="trails"></div>
+    </div>
+    <div id="map"></div>
     <!--================== Optional Scripting Links Area =============-->
     <!--================== JQuery =======================-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
