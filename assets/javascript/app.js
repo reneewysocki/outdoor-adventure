@@ -4,7 +4,7 @@ var places; // a variable to hold places
 
 
 var weatherAPIkey = "63ad6cfdee5ea624323fed889a2d525d";
- var nationalParksAPIkey = "Myd9CKal7VJIrMYyOYXHKQHZkEKIXZfMT7wT5xds";
+var nationalParksAPIkey = "Myd9CKal7VJIrMYyOYXHKQHZkEKIXZfMT7wT5xds";
 
 $("#results").hide();
 
@@ -101,38 +101,27 @@ function initMap() {
             var trailDescription = response.data[i].description;
             var trailPositionLat = parseFloat(response.data[i].lat);
             var trailPositionLon = parseFloat(response.data[i].lon);
-            var trailRating = response.data[i].rating;
-            var trailDifficulty = response.data[i].difficulty;
-            var trailURL = response.data[i].url;
-            //console.log(trailName, trailPositionLat, trailPositionLon)
             var trailPosition = { lat: trailPositionLat, lng: trailPositionLon };
-            var contentString = '<div id="content">' +
+            var trailRating = response.data[i].rating;
+            var trailLength = response.data[i].length;
+            var trailDifficulty = response.data[i].difficulty;
+            var trailThumb = response.data[i].thumbnail;
+            var trailURL = response.data[i].url;
+            var markerString = '<div id="content">' +
               '<div id="' + trailName + '">' +
               '</div>' +
               '<p id="firstHeading" class="firstHeading">' + trailName + '</p>' +
               '<div id="bodyContent">' +
               '<p> Rating: ' + trailRating + '</p>' +
               '<p> Difficulty: ' + trailDifficulty + '</p>' +
+              '<p> Length: ' + trailLength + '</p>' +
               '<p Description: ' + trailDescription + '</p>' +
               '<p><a href="' + trailURL + '">Click Here for More Information</a> ' +
               '</p>' +
               '</div>' +
               '</div>';
-              createMarker(trailPosition,trailName,contentString);
-            //({
-            //   content: contentString
-            // });
-
-            // var marker = new google.maps.Marker({
-            //   position: trailPosition,
-            //   map: map,
-            //   title: trailName,
-            // });
-            // marker.addListener('click', function () {
-            //   infowindow.open(map, marker);
-            // });
-
-
+            createMarker(trailPosition, trailName, markerString);
+            listTrails(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL);
           }
         });
       });
@@ -144,8 +133,6 @@ function initMap() {
     handleLocationError(false, infoWindow, map.getCenter());
   }
 
-
-
 }
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -156,7 +143,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   infoWindow.open(map);
 };
 
-function createMarker(trailPosition,trailName,contentString) {
+function createMarker(trailPosition, trailName, contentString) {
   var marker = new google.maps.Marker({
     position: trailPosition,
     title: trailName,
@@ -169,3 +156,43 @@ function createMarker(trailPosition,trailName,contentString) {
   });
 
 }
+
+function listTrails(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL) {
+  //gets weather for trails
+  var weatherqueryURL = "http://api.openweathermap.org/data/2.5/find?lat=" + trailPositionLat + "&lon=" + trailPositionLon + "&cnt=1&appid=" + weatherAPIkey;
+  
+  $.ajax({
+    url: weatherqueryURL,
+    method: "GET"
+  }).then(function (response) {
+    console.log(response);
+    
+        var trailTempKelvin = response.list[0].main.temp;
+        var trailTempFahr = Math.floor(((trailTempKelvin - 273.15) * 1.8) + 32)
+        var trailWeatherDis = response.list[0].weather[0].description;
+        var trailWeatherIcon = response.list[0].weather[0].icon;
+        var trailWeatherIconURL = "http://openweathermap.org/img/w/" + trailWeatherIcon + ".png";
+        var trailWeather = "<img id='current-weather-icon' src='" + trailWeatherIconURL + "'>" 
+        + "<div>" + trailTempFahr + "°</div>" 
+        + "<div>" + trailWeatherDis + " </div>" 
+      //pushes trail information to results panel
+        var resultsString =
+        "<div class='row trailResultsList'>" +
+        "<div class='col-4'>" +
+        "<img class='trailImage' src='" + trailThumb + "'>" +
+        "</div>" +
+        "<div class='col'>" +
+        "<a href='" + trailURL + "'>" +
+        "<h5>" + trailName + "</h5></a>" +
+        "Rating: " + trailRating + "<br>" +
+        trailDifficulty + "<br>" +
+        "Length: " + trailLength + "</p>" +
+        "</div>" +
+        "<div class='col-4'>" + trailWeather + 
+    
+      "</div>"
+      "</div>"
+      $("#trails").append(resultsString);
+    }
+  
+  )}
