@@ -24,3 +24,7 @@ html, body {
 #current-weather-icon {
   width: 25%;
 }
+
+.firstHeading {
+  font-size: 24px;
+}
