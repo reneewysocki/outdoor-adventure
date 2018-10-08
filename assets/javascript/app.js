@@ -100,37 +100,41 @@ var database = firebase.database();
   function manualLocation ( ) {
     var address = document.getElementById('address').value;
     console.log(address);
-    $("#results-page").show();
-    $("#front-page").hide();
 
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: { lat: 32.8448345, lng: -96.7844135 },
-      zoom: 11,
-    });
-    infoWindow = new google.maps.InfoWindow;
-
-    var geolocationURL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + googleAPIKey; 
-    $.ajax({
-      url: geolocationURL,
-      method: "GET",
-    }).then(function (response) {
-      console.log(response);
-      var currentLatitude = response.results[0].geometry.location.lat
-      var currentLongitude = response.results[0].geometry.location.lng
-      var currentLocationName = response.results[0].address_components[0].long_name
-      console.log(currentLatitude);
-      console.log(currentLongitude);
-      var pos = {
-        lat: currentLatitude,
-        lng: currentLongitude
-      };
-      infoWindow.setPosition(pos);
-      infoWindow.setContent(currentLocationName);
-      infoWindow.open(map);
-      map.setCenter(pos);
-      currentLocationWeather (currentLatitude, currentLongitude);
-      getTrailInfo (currentLatitude, currentLongitude);
-    });
+    if (address === "City, State" || address === null || address === undefined || address === "") {
+      $('#modal').modal('show');
+    } else {
+      $("#results-page").show();
+      $("#front-page").hide();
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 32.8448345, lng: -96.7844135 },
+        zoom: 11,
+      });
+      infoWindow = new google.maps.InfoWindow;
+  
+      var geolocationURL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + googleAPIKey; 
+      $.ajax({
+        url: geolocationURL,
+        method: "GET",
+      }).then(function (response) {
+        console.log(response);
+        var currentLatitude = response.results[0].geometry.location.lat
+        var currentLongitude = response.results[0].geometry.location.lng
+        var currentLocationName = response.results[0].address_components[0].long_name
+        console.log(currentLatitude);
+        console.log(currentLongitude);
+        var pos = {
+          lat: currentLatitude,
+          lng: currentLongitude
+        };
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(currentLocationName);
+        infoWindow.open(map);
+        map.setCenter(pos);
+        currentLocationWeather (currentLatitude, currentLongitude);
+        getTrailInfo (currentLatitude, currentLongitude);
+      });
+    }
   };
 
 
