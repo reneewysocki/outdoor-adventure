@@ -1,7 +1,7 @@
 // Global variables
 var trails; // a variable to hold trails
 var places; // a variable to hold places
-
+// a variable to hold by activity type
 
 var weatherAPIkey = "63ad6cfdee5ea624323fed889a2d525d";
 var nationalParksAPIkey = "Myd9CKal7VJIrMYyOYXHKQHZkEKIXZfMT7wT5xds";
@@ -83,7 +83,7 @@ function initMap() {
         $("#weather").append("<div>Temperature: " + currentLocationTempFahr + "°</div>");
         // set up trails api
         var trailsqueryURL = 'https://trailapi-trailapi.p.mashape.com/trails/explore/' + '?lat=' + currentLatitude + '%2C&lon=' + currentLongitude + '&per_page=10&radius=25';
-
+        
         $.ajax({
           url: trailsqueryURL,
           method: "GET",
@@ -93,6 +93,7 @@ function initMap() {
 
           }
         }).then(function (response) {
+           
           console.log(response);
         });
       });
@@ -115,3 +116,6 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     'Error: Your browser doesn\'t support geolocation.');
   infoWindow.open(map);
 }
+
+// Function to create trails by type and display on the page
+
