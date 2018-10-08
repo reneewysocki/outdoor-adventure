@@ -153,7 +153,7 @@ var database = firebase.database();
           var trailWeatherDis = response.list[0].weather[0].description;
           var trailWeatherIcon = response.list[0].weather[0].icon;
           var trailWeatherIconURL = "http://openweathermap.org/img/w/" + trailWeatherIcon + ".png";
-          var trailWeather = "<img id='current-weather-icon' src='" + trailWeatherIconURL + "'>" 
+          var trailWeather = "<img src='" + trailWeatherIconURL + "'>" 
           + "<div>" + trailTempFahr + "°</div>" 
           + "<div>" + trailWeatherDis + " </div>";
 
@@ -271,4 +271,9 @@ var database = firebase.database();
 function refresh () {
   $("#results-page").hide();
   $("#front-page").show();
+  currentLatitude = ""
+  currentLongitude = ""
+  $("#trails").html("")
+  $("#location").html("");
+  $("#weather").html("");
 }
