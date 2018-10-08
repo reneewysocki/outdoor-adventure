@@ -30,15 +30,13 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 
-  $("#sidebar").hide();
-  $("#map").hide();
+  $("#results-page").hide();
   $("#front-page").show();
   
 
   // If user chooses geolocation 
   function initMap() {
-    $("#sidebar").show();
-    $("#map").show();
+    $("#results-page").show();
     $("#front-page").hide();
 
     map = new google.maps.Map(document.getElementById('map'), {
@@ -62,71 +60,7 @@ var database = firebase.database();
         console.log(position.coords.longitude);
         var currentLatitude = position.coords.latitude;
         var currentLongitude = position.coords.longitude
-        //set up openweather api based on maps location
-        var weatherqueryURL = "http://api.openweathermap.org/data/2.5/find?lat=" + currentLatitude + "&lon=" + currentLongitude + "&cnt=1&appid=" + weatherAPIkey;
-        $.ajax({
-          url: weatherqueryURL,
-          method: "GET"
-        }).then(function (response) {
-          console.log(response);
-          // gets location name, temperature, weather icon and pushes it to html 
-          var currentLocationName = response.list[0].name;
-          var currentLocationTempKelvin = response.list[0].main.temp;
-          console.log(currentLocationTempKelvin);
-          var currentLocationTempFahr = Math.floor(((currentLocationTempKelvin - 273.15) * 1.8) + 32)
-          console.log(currentLocationTempFahr);
-          var currentWeatherDis = response.list[0].weather[0].description;
-          var currentWeatherIcon = response.list[0].weather[0].icon;
-          var currentWeatherIconURL = "http://openweathermap.org/img/w/" + currentWeatherIcon + ".png";
-          $("#sidebar").show();
-          $("#location").append("<b>" + currentLocationName + "</b>");
-          $("#weather").append("<img id='current-weather-icon' src='" + currentWeatherIconURL + "'>");
-          $("#weather").append("<div>" + currentWeatherDis + " </div>");
-          $("#weather").append("<div>Temperature: " + currentLocationTempFahr + "°</div>");
-          // set up trails api
-          var trailsqueryURL = 'https://trailapi-trailapi.p.mashape.com/trails/explore/' + '?lat=' + currentLatitude + '%2C&lon=' + currentLongitude + '&per_page=50';
-
-          $.ajax({
-            url: trailsqueryURL,
-            method: "GET",
-            headers: {
-              "X-Mashape-Key": "dZJGfLx5hNmshNppywXnsDamxgDPp1RzSf2jsnYe48JNSRCtXc",
-              "Accept": "application/json"
-            }
-          }).then(function (response) {
-            console.log(response);
-            //plots trail points on map 
-            for (var i = 0; i < response.data.length; i++) {
-              var trailName = response.data[i].name;
-              var trailDescription = response.data[i].description;
-              var trailPositionLat = parseFloat(response.data[i].lat);
-              var trailPositionLon = parseFloat(response.data[i].lon);
-              var trailPosition = { lat: trailPositionLat, lng: trailPositionLon };
-              var trailRating = response.data[i].rating;
-              var trailLength = response.data[i].length;
-              var trailDifficulty = response.data[i].difficulty;
-              var trailThumb = response.data[i].thumbnail;
-              var trailURL = response.data[i].url;
-              var trailRatingPercent = ((trailRating/5) * 100) + "%";
-              console.log(trailRatingPercent);
-              var markerString = '<div id="content">' +
-                '<div id="' + trailName + '">' +
-                '</div>' +
-                '<p id="firstHeading" class="firstHeading">' + trailName + '</p>' +
-                '<div id="bodyContent">' +
-                '<p> Rating: ' + trailRating + '</p>' +
-                '<p> Difficulty: ' + trailDifficulty + '</p>' +
-                '<p> Length: ' + trailLength + '</p>' +
-                '<p Description: ' + trailDescription + '</p>' +
-                '<p><a href="' + trailURL + '">Click Here for More Information</a> ' +
-                '</p>' +
-                '</div>' +
-                '</div>';
-              createMarker(trailPosition, trailName, markerString);
-              listTrails(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent);
-            }
-          });
-        });
+        currentLocationWeather (currentLatitude, currentLongitude);
       }, function () {
         handleLocationError(true, infoWindow, map.getCenter());
       });
@@ -165,8 +99,7 @@ var database = firebase.database();
   function manualLocation ( ) {
     var address = document.getElementById('address').value;
     console.log(address);
-    $("#sidebar").show();
-    $("#map").show();
+    $("#results-page").show();
     $("#front-page").hide();
 
     map = new google.maps.Map(document.getElementById('map'), {
@@ -194,7 +127,74 @@ var database = firebase.database();
       infoWindow.setContent(currentLocationName);
       infoWindow.open(map);
       map.setCenter(pos);
+      currentLocationWeather (currentLatitude, currentLongitude);
+    });
+  };
 
+
+
+
+  function listTrails(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent) {
+    //gets weather for trails
+    var weatherqueryURL = "http://api.openweathermap.org/data/2.5/find?lat=" + trailPositionLat + "&lon=" + trailPositionLon + "&cnt=1&appid=" + weatherAPIkey;
+    
+    $.ajax({
+      url: weatherqueryURL,
+      method: "GET"
+    }).then(function (response) {
+          var trailTempKelvin = response.list[0].main.temp;
+          var trailTempFahr = Math.floor(((trailTempKelvin - 273.15) * 1.8) + 32)
+          var trailWeatherDis = response.list[0].weather[0].description;
+          var trailWeatherIcon = response.list[0].weather[0].icon;
+          var trailWeatherIconURL = "http://openweathermap.org/img/w/" + trailWeatherIcon + ".png";
+          var trailWeather = "<img id='current-weather-icon' src='" + trailWeatherIconURL + "'>" 
+          + "<div>" + trailTempFahr + "°</div>" 
+          + "<div>" + trailWeatherDis + " </div>";
+
+          //$(".stars-fill").css( "width", trailRatingPercent + "%");
+
+        if (trailThumb === "") {
+          var resultsString =
+          "<div class='row trailResultsList'>" +
+          "<div class='col'>" +
+          "<a target='_blank' href='" + trailURL + "'>" +
+          "<h5>" + trailName + "</h5></a>" +
+          "Rating: " + trailRating + "<br>" +
+          trailDifficulty + "<br>" +
+          "Length: " + trailLength + "</p>" +
+          "</div>" +
+          "<div class='col-4'>" + trailWeather + 
+        "</div>"
+        "</div>"
+        } else {
+          var resultsString =
+          "<div class='row trailResultsList'>" +
+          "<div class='col-4'>" +
+          "<img class='trailImage' src='" + trailThumb + "'>" +
+          "</div>" +
+          "<div class='col'>" +
+          "<a target='_blank' href='" + trailURL + "'>" +
+          "<h5>" + trailName + "</h5></a>" +
+          // "Rating: " + trailRating + "<br>" +
+          "<div class='stars-empty'>" + 
+          "<div class='stars-fill' style='width:" + trailRatingPercent + "'> </div>" + 
+          "</div>" + 
+          "<p>" + trailDifficulty + "<br>" +
+          "Length: " + trailLength + "</p>" +
+          "</div>" +
+          "<div class='col-4'>" + trailWeather + 
+        "</div>"
+        "</div>"
+        }
+
+        
+        //pushes trail information to results panel   
+        $("#trails").append(resultsString);
+      }
+    
+    )};
+
+    function currentLocationWeather (currentLatitude, currentLongitude) {
       var weatherqueryURL = "http://api.openweathermap.org/data/2.5/find?lat=" + currentLatitude + "&lon=" + currentLongitude + "&cnt=1&appid=" + weatherAPIkey;
         $.ajax({
           url: weatherqueryURL,
@@ -216,7 +216,7 @@ var database = firebase.database();
           $("#weather").append("<div>" + currentWeatherDis + " </div>");
           $("#weather").append("<div>Temperature: " + currentLocationTempFahr + "°</div>");
           // set up trails api
-          var trailsqueryURL = 'https://trailapi-trailapi.p.mashape.com/trails/explore/' + '?lat=' + currentLatitude + '%2C&lon=' + currentLongitude + '&per_page=50';
+          var trailsqueryURL = 'https://trailapi-trailapi.p.mashape.com/trails/explore/' + '?lat=' + currentLatitude + '%2C&lon=' + currentLongitude + '&per_page=100';
 
           $.ajax({
             url: trailsqueryURL,
@@ -250,7 +250,7 @@ var database = firebase.database();
                 '<p> Difficulty: ' + trailDifficulty + '</p>' +
                 '<p> Length: ' + trailLength + '</p>' +
                 '<p Description: ' + trailDescription + '</p>' +
-                '<p><a href="' + trailURL + '">Click Here for More Information</a> ' +
+                '<p><a target="_blank" href="' + trailURL + '">Click Here for More Information</a> ' +
                 '</p>' +
                 '</div>' +
                 '</div>';
@@ -259,67 +259,4 @@ var database = firebase.database();
             }
           });
         });
-    });
-  };
-
-
-  function listTrails(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent) {
-    //gets weather for trails
-    var weatherqueryURL = "http://api.openweathermap.org/data/2.5/find?lat=" + trailPositionLat + "&lon=" + trailPositionLon + "&cnt=1&appid=" + weatherAPIkey;
-    
-    $.ajax({
-      url: weatherqueryURL,
-      method: "GET"
-    }).then(function (response) {
-          var trailTempKelvin = response.list[0].main.temp;
-          var trailTempFahr = Math.floor(((trailTempKelvin - 273.15) * 1.8) + 32)
-          var trailWeatherDis = response.list[0].weather[0].description;
-          var trailWeatherIcon = response.list[0].weather[0].icon;
-          var trailWeatherIconURL = "http://openweathermap.org/img/w/" + trailWeatherIcon + ".png";
-          var trailWeather = "<img id='current-weather-icon' src='" + trailWeatherIconURL + "'>" 
-          + "<div>" + trailTempFahr + "°</div>" 
-          + "<div>" + trailWeatherDis + " </div>";
-
-          //$(".stars-fill").css( "width", trailRatingPercent + "%");
-
-        if (trailThumb === "") {
-          var resultsString =
-          "<div class='row trailResultsList'>" +
-          "<div class='col'>" +
-          "<a href='" + trailURL + "'>" +
-          "<h5>" + trailName + "</h5></a>" +
-          "Rating: " + trailRating + "<br>" +
-          trailDifficulty + "<br>" +
-          "Length: " + trailLength + "</p>" +
-          "</div>" +
-          "<div class='col-4'>" + trailWeather + 
-        "</div>"
-        "</div>"
-        } else {
-          var resultsString =
-          "<div class='row trailResultsList'>" +
-          "<div class='col-4'>" +
-          "<img class='trailImage' src='" + trailThumb + "'>" +
-          "</div>" +
-          "<div class='col'>" +
-          "<a href='" + trailURL + "'>" +
-          "<h5>" + trailName + "</h5></a>" +
-          // "Rating: " + trailRating + "<br>" +
-          "<div class='stars-empty'>" + 
-          "<div class='stars-fill' style='width:" + trailRatingPercent + "'> </div>" + 
-          "</div>" + 
-          "<p>" + trailDifficulty + "<br>" +
-          "Length: " + trailLength + "</p>" +
-          "</div>" +
-          "<div class='col-4'>" + trailWeather + 
-        "</div>"
-        "</div>"
-        }
-
-        
-        //pushes trail information to results panel   
-        $("#trails").append(resultsString);
-      }
-    
-    )};
-
+    }

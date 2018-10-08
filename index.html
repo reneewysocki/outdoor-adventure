@@ -48,22 +48,30 @@
                     <p>or Enter Your Adventure Location</p>
                 </div>
                 <div class="row justify-content-center">
-                                <input id="address" placeholder="Enter your address" type="text" value="City, State">
-                                <input type="button" value="Submit" onclick="manualLocation()">
+                    <input id="address" placeholder="Enter your address" type="text" value="City, State">
+                    <input type="button" value="Submit" onclick="manualLocation()">
                 </div>
             </div>
         </div>
     </div>
     <!--================== Map & Sidebar =================-->
-    <div id="sidebar">
-        <div id="currentLocationWeather">
-            <div id="location"> Current Location: </div>
-            <div id="weather"></div>
+    <div class="container-fluid" id="results-page">
+        <div class="row">
+            <div class="col-5" id="sidebar">
+                <div id="currentLocationWeather">
+                    <div id="location"> Current Location: </div>
+                    <div id="weather"></div>
+                </div>
+                <h5>Trails Near You: </h5>
+                <div class="trails" id="trails"></div>
+            </div>
+            <div class="col" id="map-div">
+                <div id="map"></div>
+            </div>
         </div>
-        <h5>Trails Near You: </h5>
-        <div class="trails" id="trails"></div>
+        
     </div>
-    <div id="map"></div>
+
     <!--================== Optional Scripting Links Area =============-->
     <!--================== JQuery =======================-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
