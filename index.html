@@ -56,7 +56,7 @@
     </div>
     <!--================== Map & Sidebar =================-->
     <div class="container-fluid" id="results-page">
-        <div class="row">
+        <div class="row justify-content-center">
             <div class="col-5" id="sidebar">
                 <div id="currentLocationWeather">
                     <div id="location"> Current Location: </div>
@@ -64,6 +64,9 @@
                 </div>
                 <h5>Trails Near You: </h5>
                 <div class="trails" id="trails"></div>
+                <div class="justify-content-center">
+                    <button type="button" class="btn btn-primary" id="return" onclick="refresh()">Find a New Adventure</button>
+                </div>
             </div>
             <div class="col" id="map-div">
                 <div id="map"></div>
