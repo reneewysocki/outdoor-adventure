@@ -263,3 +263,8 @@ var database = firebase.database();
         }
       });
     }
+
+function refresh () {
+  $("#results-page").hide();
+  $("#front-page").show();
+}
