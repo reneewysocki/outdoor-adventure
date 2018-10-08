@@ -58,9 +58,17 @@
     <div class="container-fluid" id="results-page">
         <div class="row justify-content-center">
             <div class="col-5" id="sidebar">
-                <div id="currentLocationWeather">
-                    <div id="location"> Current Location: </div>
-                    <div id="weather"></div>
+                <div>
+                    <div class="row">
+                        <div class="col-8" id="currentLocationWeather">
+                            <div id="location"> Current Location: </div>
+                            <div id="weather"></div>
+                        </div>
+                        <div class="col">
+                            Favorites
+                        </div>
+                    </div>
+
                 </div>
                 <h5>Trails Near You: </h5>
                 <div class="trails" id="trails"></div>
@@ -74,7 +82,19 @@
         </div>
         
     </div>
-
+    <!--================== Modal =================-->
+    <div class="modal" tabindex="-1" role="dialog" id="modal">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <p>Please enter a valid location.</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+    </div>
     <!--================== Optional Scripting Links Area =============-->
     <!--================== JQuery =======================-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

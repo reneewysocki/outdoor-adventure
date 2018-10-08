@@ -100,37 +100,41 @@ var database = firebase.database();
   function manualLocation ( ) {
     var address = document.getElementById('address').value;
     console.log(address);
-    $("#results-page").show();
-    $("#front-page").hide();
 
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: { lat: 32.8448345, lng: -96.7844135 },
-      zoom: 11,
-    });
-    infoWindow = new google.maps.InfoWindow;
-
-    var geolocationURL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + googleAPIKey; 
-    $.ajax({
-      url: geolocationURL,
-      method: "GET",
-    }).then(function (response) {
-      console.log(response);
-      var currentLatitude = response.results[0].geometry.location.lat
-      var currentLongitude = response.results[0].geometry.location.lng
-      var currentLocationName = response.results[0].address_components[0].long_name
-      console.log(currentLatitude);
-      console.log(currentLongitude);
-      var pos = {
-        lat: currentLatitude,
-        lng: currentLongitude
-      };
-      infoWindow.setPosition(pos);
-      infoWindow.setContent(currentLocationName);
-      infoWindow.open(map);
-      map.setCenter(pos);
-      currentLocationWeather (currentLatitude, currentLongitude);
-      getTrailInfo (currentLatitude, currentLongitude);
-    });
+    if (address === "City, State" || address === null || address === undefined || address === "") {
+      $('#modal').modal('show');
+    } else {
+      $("#results-page").show();
+      $("#front-page").hide();
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 32.8448345, lng: -96.7844135 },
+        zoom: 11,
+      });
+      infoWindow = new google.maps.InfoWindow;
+  
+      var geolocationURL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + googleAPIKey; 
+      $.ajax({
+        url: geolocationURL,
+        method: "GET",
+      }).then(function (response) {
+        console.log(response);
+        var currentLatitude = response.results[0].geometry.location.lat
+        var currentLongitude = response.results[0].geometry.location.lng
+        var currentLocationName = response.results[0].address_components[0].long_name
+        console.log(currentLatitude);
+        console.log(currentLongitude);
+        var pos = {
+          lat: currentLatitude,
+          lng: currentLongitude
+        };
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(currentLocationName);
+        infoWindow.open(map);
+        map.setCenter(pos);
+        currentLocationWeather (currentLatitude, currentLongitude);
+        getTrailInfo (currentLatitude, currentLongitude);
+      });
+    }
   };
 
 
@@ -149,7 +153,7 @@ var database = firebase.database();
           var trailWeatherDis = response.list[0].weather[0].description;
           var trailWeatherIcon = response.list[0].weather[0].icon;
           var trailWeatherIconURL = "http://openweathermap.org/img/w/" + trailWeatherIcon + ".png";
-          var trailWeather = "<img id='current-weather-icon' src='" + trailWeatherIconURL + "'>" 
+          var trailWeather = "<img src='" + trailWeatherIconURL + "'>" 
           + "<div>" + trailTempFahr + "°</div>" 
           + "<div>" + trailWeatherDis + " </div>";
 
@@ -267,4 +271,9 @@ var database = firebase.database();
 function refresh () {
   $("#results-page").hide();
   $("#front-page").show();
+  currentLatitude = ""
+  currentLongitude = ""
+  $("#trails").html("")
+  $("#location").html("");
+  $("#weather").html("");
 }
