@@ -1,24 +1,41 @@
 #map {
-  height: 100%;
+   height: 100%; 
+   width: 100%;
 }
 
-/* Optional: Makes the sample page fill the window. */
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}   
-
-.full-length {
-  height: 100%;
+#map-div {
+  margin: 0;
+  padding: 0;
 }
 
-#results {
-  margin-top: 20px;
+
+#front-page {
+  height: 100%; 
+  width: 100%;
+  background-color: white;
+  text-align: center;
+}
+
+#results-page {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#sidebar { 
+  padding-right: 0;
+}
+
+#currentLocationWeather {
+  text-align: center;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 20px;
 }
 
 #current-location {
   text-align: center;
+  margin: 10px;
 }
 
 #current-weather-icon {
@@ -27,4 +44,58 @@ html, body {
 
 .firstHeading {
   font-size: 24px;
+}
+
+.trailResultsList {
+  border: 1px solid black;
+  padding: 10px;
+  background-color: white;
+} 
+
+.trailResultsTitle {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.trailResultsDesc {
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.trailImage {
+  height: 100px;
+  width: 100px;
+}
+
+div.trails {
+  height: 800px;
+  overflow: scroll;
+  border-radius: 20px;
+}
+
+.stars-empty {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+}
+ 
+.stars-empty::before {
+  content: "\f006 \f006 \f006 \f006 \f006";
+}
+ 
+.stars-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
+ 
+.stars-fill::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #f8ce0b;
+}
+
+#inputArea {
+  margin-top: 20px;
 }
