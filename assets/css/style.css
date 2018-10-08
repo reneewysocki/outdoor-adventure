@@ -11,6 +11,13 @@ html, body {
     padding: 0;
 }  
 
+#front-page {
+  height: 100%; 
+  width: 100%;
+  background-color: white;
+  text-align: center;
+}
+
 #sidebar { 
   height: 100%;
   width: 33%;
@@ -86,4 +93,8 @@ div.trails {
 .stars-fill::before {
   content: "\f005 \f005 \f005 \f005 \f005";
   color: #f8ce0b;
+}
+
+#inputArea {
+  margin-top: 20px;
 }

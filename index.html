@@ -21,16 +21,46 @@
 </head>
 
 <body>
-    <!--================== Header Area =============================-->
-
-    <!--================== Main Body Content Area  =================-->
-
+    <!--================== Front Page =============================-->
+    <div class="container-fluid" id="front-page">
+        <div class="row justify-content-center" id="header">
+            <h1>
+                Outdoor Adventures
+            </h1>
+        </div>
+        <div class="row justify-content-center" id="instructions">
+            <p>
+                There’s nothing like the great outdoors. <br>
+                There are all kinds of physical and mental health benefits garnered from spending time outside and away
+                from electronic devices. <br>
+                Whether its a bike ride around the parks, a few hours fishing or just a jog outside. The outdoors is
+                waiting on you! <br>
+                Select your adventure and then enter your location and we'll find a place for you! <br>
+                Be sure to check the weather forecast before you head out! <br>
+            </p>
+        </div>
+        <div class="row justify-content-center">
+            <button type="submit" class="btn btn-primary btn-lg" onclick="initMap()">Use My Current Location</button>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col" id="locationField">
+                <div class="row justify-content-center">
+                    <p>or Enter Your Adventure Location</p>
+                </div>
+                <div class="row justify-content-center">
+                                <input id="address" placeholder="Enter your address" type="text" value="City, State">
+                                <input type="button" value="Submit" onclick="manualLocation()">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--================== Map & Sidebar =================-->
     <div id="sidebar">
         <div id="currentLocationWeather">
             <div id="location"> Current Location: </div>
             <div id="weather"></div>
         </div>
-        <h5>Trails Near You: </h5> 
+        <h5>Trails Near You: </h5>
         <div class="trails" id="trails"></div>
     </div>
     <div id="map"></div>
@@ -38,8 +68,7 @@
     <!--================== JQuery =======================-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!--================== Google Maps API =======================-->
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGcE5jmaNXlSOnkF9hz6oYTFhQl3qPFaU&callback=initMap"
-        type="text/javascript"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGcE5jmaNXlSOnkF9hz6oYTFhQl3qPFaU" type="text/javascript"></script>
     <!--================== Bootstrap CSS Link =======================-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
         crossorigin="anonymous"></script>
