@@ -41,7 +41,7 @@ var database = firebase.database();
 
     map = new google.maps.Map(document.getElementById('map'), {
       center: { lat: 32.8448345, lng: -96.7844135 },
-      zoom: 10
+      zoom: 11,
     });
     infoWindow = new google.maps.InfoWindow;
 
@@ -61,6 +61,7 @@ var database = firebase.database();
         var currentLatitude = position.coords.latitude;
         var currentLongitude = position.coords.longitude
         currentLocationWeather (currentLatitude, currentLongitude);
+        getTrailInfo (currentLatitude, currentLongitude);
       }, function () {
         handleLocationError(true, infoWindow, map.getCenter());
       });
@@ -104,7 +105,7 @@ var database = firebase.database();
 
     map = new google.maps.Map(document.getElementById('map'), {
       center: { lat: 32.8448345, lng: -96.7844135 },
-      zoom: 10
+      zoom: 11,
     });
     infoWindow = new google.maps.InfoWindow;
 
@@ -128,13 +129,14 @@ var database = firebase.database();
       infoWindow.open(map);
       map.setCenter(pos);
       currentLocationWeather (currentLatitude, currentLongitude);
+      getTrailInfo (currentLatitude, currentLongitude);
     });
   };
 
 
 
 
-  function listTrails(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent) {
+  function trailWeather(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent) {
     //gets weather for trails
     var weatherqueryURL = "http://api.openweathermap.org/data/2.5/find?lat=" + trailPositionLat + "&lon=" + trailPositionLon + "&cnt=1&appid=" + weatherAPIkey;
     
@@ -210,53 +212,59 @@ var database = firebase.database();
           var currentWeatherDis = response.list[0].weather[0].description;
           var currentWeatherIcon = response.list[0].weather[0].icon;
           var currentWeatherIconURL = "http://openweathermap.org/img/w/" + currentWeatherIcon + ".png";
-          $("#sidebar").show();
           $("#location").append("<b>" + currentLocationName + "</b>");
           $("#weather").append("<img id='current-weather-icon' src='" + currentWeatherIconURL + "'>");
           $("#weather").append("<div>" + currentWeatherDis + " </div>");
           $("#weather").append("<div>Temperature: " + currentLocationTempFahr + "°</div>");
-          // set up trails api
-          var trailsqueryURL = 'https://trailapi-trailapi.p.mashape.com/trails/explore/' + '?lat=' + currentLatitude + '%2C&lon=' + currentLongitude + '&per_page=100';
-
-          $.ajax({
-            url: trailsqueryURL,
-            method: "GET",
-            headers: {
-              "X-Mashape-Key": "dZJGfLx5hNmshNppywXnsDamxgDPp1RzSf2jsnYe48JNSRCtXc",
-              "Accept": "application/json"
-            }
-          }).then(function (response) {
-            console.log(response);
-            //plots trail points on map 
-            for (var i = 0; i < response.data.length; i++) {
-              var trailName = response.data[i].name;
-              var trailDescription = response.data[i].description;
-              var trailPositionLat = parseFloat(response.data[i].lat);
-              var trailPositionLon = parseFloat(response.data[i].lon);
-              var trailPosition = { lat: trailPositionLat, lng: trailPositionLon };
-              var trailRating = response.data[i].rating;
-              var trailLength = response.data[i].length;
-              var trailDifficulty = response.data[i].difficulty;
-              var trailThumb = response.data[i].thumbnail;
-              var trailURL = response.data[i].url;
-              var trailRatingPercent = ((trailRating/5) * 100) + "%";
-              console.log(trailRatingPercent);
-              var markerString = '<div id="content">' +
-                '<div id="' + trailName + '">' +
-                '</div>' +
-                '<p id="firstHeading" class="firstHeading">' + trailName + '</p>' +
-                '<div id="bodyContent">' +
-                '<p> Rating: ' + trailRating + '</p>' +
-                '<p> Difficulty: ' + trailDifficulty + '</p>' +
-                '<p> Length: ' + trailLength + '</p>' +
-                '<p Description: ' + trailDescription + '</p>' +
-                '<p><a target="_blank" href="' + trailURL + '">Click Here for More Information</a> ' +
-                '</p>' +
-                '</div>' +
-                '</div>';
-              createMarker(trailPosition, trailName, markerString);
-              listTrails(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent);
-            }
-          });
+          
         });
     }
+
+    function getTrailInfo (currentLatitude, currentLongitude) {
+      var trailsqueryURL = 'https://trailapi-trailapi.p.mashape.com/trails/explore/' + '?lat=' + currentLatitude + '%2C&lon=' + currentLongitude + '&per_page=100';
+
+      $.ajax({
+        url: trailsqueryURL,
+        method: "GET",
+        headers: {
+          "X-Mashape-Key": "dZJGfLx5hNmshNppywXnsDamxgDPp1RzSf2jsnYe48JNSRCtXc",
+          "Accept": "application/json"
+        }
+      }).then(function (response) {
+        console.log(response);
+        //plots trail points on map 
+        for (var i = 0; i < response.data.length; i++) {
+          var trailName = response.data[i].name;
+          var trailDescription = response.data[i].description;
+          var trailPositionLat = parseFloat(response.data[i].lat);
+          var trailPositionLon = parseFloat(response.data[i].lon);
+          var trailPosition = { lat: trailPositionLat, lng: trailPositionLon };
+          var trailRating = response.data[i].rating;
+          var trailLength = response.data[i].length;
+          var trailDifficulty = response.data[i].difficulty;
+          var trailThumb = response.data[i].thumbnail;
+          var trailURL = response.data[i].url;
+          var trailRatingPercent = ((trailRating/5) * 100) + "%";
+          var markerString = '<div id="content">' +
+            '<div id="' + trailName + '">' +
+            '</div>' +
+            '<p id="firstHeading" class="firstHeading">' + trailName + '</p>' +
+            '<div id="bodyContent">' +
+            '<p> Rating: ' + trailRating + '</p>' +
+            '<p> Difficulty: ' + trailDifficulty + '</p>' +
+            '<p> Length: ' + trailLength + '</p>' +
+            '<p Description: ' + trailDescription + '</p>' +
+            '<p><a target="_blank" href="' + trailURL + '">Click Here for More Information</a> ' +
+            '</p>' +
+            '</div>' +
+            '</div>';
+          createMarker(trailPosition, trailName, markerString);
+          trailWeather(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent);
+        }
+      });
+    }
+
+function refresh () {
+  $("#results-page").hide();
+  $("#front-page").show();
+}
