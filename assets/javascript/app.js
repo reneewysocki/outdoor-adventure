@@ -1,5 +1,7 @@
 // Global variables
 var map, infoWindow, trails, places, geocoder;
+var iconBase = "C:/Users/Renee Wysocki/Desktop/coding-bootcamp/repositories/outdoor-adventure/assets/images/map-marker-50h.png"
+        
 
 var weatherAPIkey = "63ad6cfdee5ea624323fed889a2d525d";
 var nationalParksAPIkey = "Myd9CKal7VJIrMYyOYXHKQHZkEKIXZfMT7wT5xds";
@@ -99,6 +101,7 @@ $('#favoriteBtn').on('click', favoritePlaces);
     var marker = new google.maps.Marker({
       position: trailPosition,
       title: trailName,
+      icon: iconBase,
       map: map
     });
     var infowindow = new google.maps.InfoWindow
@@ -251,7 +254,7 @@ $('#favoriteBtn').on('click', favoritePlaces);
             '</div>' +
             '<p id="firstHeading" class="firstHeading">' + trailName + '</p>' +
             '<div id="bodyContent">' +
-            `<img src=${trailThumb}>` +  
+            '<img src="' +  trailThumb + '" class="marker-img">' +
             '<p> Rating: ' + trailRating + '</p>' +
             '<p> Difficulty: ' + trailDifficulty + '</p>' +
             '<p> Length: ' + trailLength + '</p>' +
