@@ -32,10 +32,13 @@ body, html {
   height: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden
 }
 
 #sidebar { 
   padding-right: 0;
+  background-color: rgba(142,40,0,0.3);
+  text-align: center;
 }
 
 #currentLocationWeather {
@@ -64,7 +67,12 @@ body, html {
   border: 1px solid #B64926;
   padding: 10px;
   background-color: #FFF9DE;
+  padding-left: 20px;
 } 
+
+.trail-info-results {
+  text-align: left;
+}
 
 .trailResultsTitle {
   font-size: 18px;
@@ -84,7 +92,6 @@ body, html {
 div.trails {
   height: 800px;
   overflow: scroll;
-  border-radius: 20px;
   font-family: 'Source Code Pro', monospace;
 }
 
@@ -134,12 +141,29 @@ div.trails {
   font-family: 'Source Code Pro', monospace;
 }
 
+.container-title {
+  font-size: 35px;
+  color: #468966;
+  font-family: 'Amatic SC', cursive;
+  -webkit-text-stroke: 2px #FFB03B;
+}
+
 .button {
   background-color: #8E2800;
   color: white;
   font-family: 'Amatic SC', cursive;
   font-size: 20px;
-  margin: 2px solid #B64926;
+  margin: 1px solid #B64926;
+}
+
+.fav-button {
+  color: #B64926;
+  margin-right: 10px;
+}
+
+.fav-button:hover {
+  color: #8E2800;
+  margin-right: 10px;
 }
 
 #address {
@@ -168,12 +192,13 @@ a:hover {
   color: #B64926;
 }
 
-#trails::-webkit-scrollbar {
+ #trails::-webkit-scrollbar {
   width: 1em;
 }
 
 #trails::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+   box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 }
 
 #trails::-webkit-scrollbar-thumb {
@@ -187,9 +212,14 @@ html::-webkit-scrollbar {
 
 html::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
 }
 
 html::-webkit-scrollbar-thumb {
 background-image: url("../images/wood-grain.jpg");
 outline: 1px solid #468966;
+}
+
+html::-webkit-scrollbar-corner {
+  background-color: #8E2800;
 }

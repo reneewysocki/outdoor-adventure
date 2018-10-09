@@ -172,28 +172,13 @@ $('#favoriteBtn').on('click', favoritePlaces);
           + "<div class='trail-weather'>" + trailWeatherDis + " </div>";
 
           //$(".stars-fill").css( "width", trailRatingPercent + "%");
-
-        if (trailThumb === "") {
-          var resultsString =
-          "<div class='row trailResultsList'>" +
-          "<div class='col'>" +
-          "<a target='_blank' href='" + trailURL + "'>" +
-          "<h5><b>" + trailName + "</b></h5></a>" +
-          "Rating: " + trailRating + "<br>" +
-          trailDifficulty + "<br>" +
-          "Length: " + trailLength + "</p>" +
-          "</div>" +
-          "<div class='col-4 justify-content-center'>" + trailWeather + 
-        "</div>"
-        "</div>"
-        } else {
           var resultsString =
           "<div class='row trailResultsList'>" +
           "<div class='col-3'>" +
           "<img class='trailImage' src='" + trailThumb + "'>" +
           "</div>" +
-          "<div class='col'>" +
-          "<a target='_blank' href='" + trailURL + "'>" +
+          "<div class='col trail-info-results'>" +
+          "<a target='_blank' href='" + trailURL + "'>" + "<i class='fas fa-bicycle'></i>" +
           "<h5><b>" + trailName + "</b></h5></a>" +
           // "Rating: " + trailRating + "<br>" +
           "<div class='stars-empty'>" + 
@@ -202,12 +187,9 @@ $('#favoriteBtn').on('click', favoritePlaces);
           "<p>" + trailDifficulty + "<br>" +
           "Length: " + trailLength + "</p>" +
           "</div>" +
-          "<div class='col-4'>" + trailWeather + 
-        "</div>" + "<div class='button'>" + "<i class='fas fa-heart btn btn-primary btn-sm' aria-hidden='false' id='favoriteBTN'></i>"+"</div>" +
+          "<div class='col-3'>" + trailWeather + 
+        "</div>" + "<div class='fav-button'>" + "<i class='fas fa-heart btn btn-sm' aria-hidden='false' id='favoriteBTN'></i>"+"</div>" +
         "</div>"
-        }
-
-        
         //pushes trail information to results panel   
         $("#trails").append(resultsString);
       }
