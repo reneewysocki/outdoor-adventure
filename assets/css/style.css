@@ -193,3 +193,7 @@ html::-webkit-scrollbar-thumb {
 background-image: url("../images/wood-grain.jpg");
 outline: 1px solid #468966;
 }
+/* favorite button styling */
+#favoriteBTN {
+  float:left;
+}
