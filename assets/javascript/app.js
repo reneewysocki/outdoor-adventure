@@ -1,6 +1,6 @@
 // Global variables
 var map, infoWindow, trails, places, geocoder;
-var iconBase = "C:/Users/Renee Wysocki/Desktop/coding-bootcamp/repositories/outdoor-adventure/assets/images/map-marker-50h.png"
+var iconBase = "./assets/images/map-marker.png"
         
 
 var weatherAPIkey = "63ad6cfdee5ea624323fed889a2d525d";
