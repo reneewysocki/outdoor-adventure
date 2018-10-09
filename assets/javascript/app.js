@@ -26,8 +26,22 @@ var config = {
 };
 
 firebase.initializeApp(config);
-
+///////////////////// Working Firebase Favorite Button Area ////////////////////////////////////
+// Variable to reference the firebase database
 var database = firebase.database();
+var favoriteRef = database.ref('favorites');
+var trailRef = database.ref('favorites/trail')
+
+// working on this function to read the Google firebase database
+function favoritePlaces (id)
+{
+  
+
+}
+
+// Handles the click function of the Favorite Places button then call the favorite places function
+$('#favoriteBtn').on('click', favoritePlaces);
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 
   $("#results-page").hide();
@@ -188,8 +202,8 @@ var database = firebase.database();
           "<p>" + trailDifficulty + "<br>" +
           "Length: " + trailLength + "</p>" +
           "</div>" +
-          "<div class='col-4 justify-content-center'>" + trailWeather + 
-        "</div>"
+          "<div class='col-4'>" + trailWeather + 
+        "</div>" + "<div class='button'>" + "<i class='fas fa-heart btn btn-primary btn-sm' aria-hidden='false' id='favoriteBTN'></i>"+"</div>" +
         "</div>"
         }
 
@@ -237,7 +251,8 @@ var database = firebase.database();
       }).then(function (response) {
         console.log(response);
         //plots trail points on map 
-        for (var i = 0; i < response.data.length; i++) {
+        for (var i = 0; i < response.data.length; i++) 
+        {
           var trailName = response.data[i].name;
           var trailDescription = response.data[i].description;
           var trailPositionLat = parseFloat(response.data[i].lat);
@@ -269,6 +284,8 @@ var database = firebase.database();
       });
     }
 
+
+
 function refresh () {
   $("#results-page").hide();
   $("#front-page").show();
@@ -278,3 +295,4 @@ function refresh () {
   $("#location").empty();
   $("#weather").empty();
 }
+
