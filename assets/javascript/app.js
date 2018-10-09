@@ -118,7 +118,7 @@ $('#favoriteBtn').on('click', favoritePlaces);
     var address = document.getElementById('address').value;
     console.log(address);
 
-    if (address === "City, State" || address === null || address === undefined || address === "") {
+    if (address === null || address === undefined || address === "") {
       $('#modal').modal('show');
     } else {
       $("#results-page").show();
@@ -137,7 +137,8 @@ $('#favoriteBtn').on('click', favoritePlaces);
         console.log(response);
         var currentLatitude = response.results[0].geometry.location.lat
         var currentLongitude = response.results[0].geometry.location.lng
-        var currentLocationName = response.results[0].address_components[0].long_name
+        var currentLocationName = response.results[0].formatted_address
+        console.log(currentLocationName);
         console.log(currentLatitude);
         console.log(currentLongitude);
         var pos = {
