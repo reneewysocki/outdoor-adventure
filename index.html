@@ -12,8 +12,9 @@
     <!--================== CSS Stylesheet ============================-->
     <link rel="stylesheet" href="assets/css/style.css">
     <!--================== Font Awesome Link =============================-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <!--================== Google Fonts Link =============================-->
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC|Source+Code+Pro" rel="stylesheet">
     <!--================== Firebase Link =============================-->
     <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-database.js"></script>
@@ -23,35 +24,42 @@
 
 <body>
     <!--================== Front Page =============================-->
-    <div class="container-fluid" id="front-page">
+    <div class="container" id="front-page">
         <div class="row justify-content-center" id="header">
-            <h1>
+            <h1 class="title">
                 Outdoor Adventures
             </h1>
         </div>
         <div class="row justify-content-center" id="instructions">
-            <p>
-                There’s nothing like the great outdoors. <br>
-                There are all kinds of physical and mental health benefits garnered from spending time outside and away
-                from electronic devices. <br>
-                Whether its a bike ride around the parks, a few hours fishing or just a jog outside. The outdoors is
-                waiting on you! <br>
-                Select your adventure and then enter your location and we'll find a place for you! <br>
-                Be sure to check the weather forecast before you head out! <br>
-            </p>
+            <div class="container">
+                <p>
+                    There’s nothing like the great outdoors. <br>
+                    There are all kinds of physical and mental health benefits garnered from spending time outside and
+                    away
+                    from electronic devices. <br>
+                    Whether its a bike ride around the parks, a few hours fishing or just a jog outside. The outdoors
+                    is
+                    waiting on you! <br>
+                    Select your adventure and then enter your location and we'll find a place for you! <br>
+                    Be sure to check the weather forecast before you head out! <br>
+                </p>
+            </div>
         </div>
         <div class="row justify-content-center">
-            <button type="submit" class="btn btn-primary btn-lg" onclick="initMap()">Use My Current Location</button>
+            <button id="geolocate-button" type="submit" class="button btn btn-lg" onclick="initMap()">Use My Current
+                Location</button>
         </div>
         <div class="row justify-content-center">
+            <div class="container">
             <div class="col" id="locationField">
-                <div class="row justify-content-center">
-                    <p>or Enter Your Adventure Location</p>
+                <div class="row  justify-content-center">
+                    <form style="width: 100%">
+                        <legend>Or Enter The Location of Your Next Adventure</legend>
+                        <input id="address" placeholder="Enter your street address or city" type="text">
+                        <input class="button btn" type="button" value="Submit" onclick="manualLocation()">
+                    </form>
                 </div>
-                <div class="row justify-content-center">
-                    <input id="address" placeholder="Enter your address" type="text" value="City, State">
-                    <input type="button" value="Submit" onclick="manualLocation()">
-                </div>
+            </div>
             </div>
         </div>
     </div>
@@ -61,14 +69,9 @@
             <div class="col-5" id="sidebar">
                 <div>
                     <div class="row">
-                        <div class="col-8" id="currentLocationWeather">
+                        <div class="col" id="currentLocationWeather">
                             <div id="location"> Current Location: </div>
                             <div id="weather"></div>
-                        </div>
-                        <div class="col">
-                            <button class="btn-primary"  type="button" id="trailNearBTN">
-                            Trails Near You
-                            </button>
                         </div>
                     </div>
 
@@ -76,27 +79,27 @@
                 <h5>Trails Near You: </h5>
                 <div class="trails" id="trails"></div>
                 <div class="justify-content-center">
-                    <button type="button" class="btn btn-primary" id="return" onclick="refresh()">Find a New Adventure</button>
+                    <button type="button" class="btn button" id="return" onclick="refresh()"><b>Find a New Adventure</b></button>
                 </div>
             </div>
             <div class="col" id="map-div">
                 <div id="map"></div>
             </div>
         </div>
-        
+
     </div>
     <!--================== Modal =================-->
     <div class="modal" tabindex="-1" role="dialog" id="modal">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
                 <div class="modal-body">
-                  <p>Please enter a valid location.</p>
+                    <p>Please enter a valid location.</p>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
-              </div>
             </div>
+        </div>
     </div>
     <!--================== Optional Scripting Links Area =============-->
     <!--================== JQuery =======================-->

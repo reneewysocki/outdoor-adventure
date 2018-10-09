@@ -106,8 +106,8 @@ $('#favoriteBtn').on('click', favoritePlaces);
       infowindow.setContent(contentString);
       infowindow.open(map, marker);
     });
-
-  }
+    
+    }
 
 
   //If user chooses to input location manually
@@ -169,7 +169,7 @@ $('#favoriteBtn').on('click', favoritePlaces);
           var trailWeatherIconURL = "http://openweathermap.org/img/w/" + trailWeatherIcon + ".png";
           var trailWeather = "<img src='" + trailWeatherIconURL + "'>" 
           + "<div>" + trailTempFahr + "°</div>" 
-          + "<div>" + trailWeatherDis + " </div>";
+          + "<div class='trail-weather'>" + trailWeatherDis + " </div>";
 
           //$(".stars-fill").css( "width", trailRatingPercent + "%");
 
@@ -178,23 +178,23 @@ $('#favoriteBtn').on('click', favoritePlaces);
           "<div class='row trailResultsList'>" +
           "<div class='col'>" +
           "<a target='_blank' href='" + trailURL + "'>" +
-          "<h5>" + trailName + "</h5></a>" +
+          "<h5><b>" + trailName + "</b></h5></a>" +
           "Rating: " + trailRating + "<br>" +
           trailDifficulty + "<br>" +
           "Length: " + trailLength + "</p>" +
           "</div>" +
-          "<div class='col-4'>" + trailWeather + 
+          "<div class='col-4 justify-content-center'>" + trailWeather + 
         "</div>"
         "</div>"
         } else {
           var resultsString =
           "<div class='row trailResultsList'>" +
-          "<div class='col-4'>" +
+          "<div class='col-3'>" +
           "<img class='trailImage' src='" + trailThumb + "'>" +
           "</div>" +
           "<div class='col'>" +
           "<a target='_blank' href='" + trailURL + "'>" +
-          "<h5>" + trailName + "</h5></a>" +
+          "<h5><b>" + trailName + "</b></h5></a>" +
           // "Rating: " + trailRating + "<br>" +
           "<div class='stars-empty'>" + 
           "<div class='stars-fill' style='width:" + trailRatingPercent + "'> </div>" + 
@@ -269,6 +269,7 @@ $('#favoriteBtn').on('click', favoritePlaces);
             '</div>' +
             '<p id="firstHeading" class="firstHeading">' + trailName + '</p>' +
             '<div id="bodyContent">' +
+            `<img src=${trailThumb}>` +  
             '<p> Rating: ' + trailRating + '</p>' +
             '<p> Difficulty: ' + trailDifficulty + '</p>' +
             '<p> Length: ' + trailLength + '</p>' +
@@ -290,8 +291,8 @@ function refresh () {
   $("#front-page").show();
   currentLatitude = ""
   currentLongitude = ""
-  $("#trails").html("")
-  $("#location").html("");
-  $("#weather").html("");
+  $("#trails").empty();
+  $("#location").empty();
+  $("#weather").empty();
 }
 
