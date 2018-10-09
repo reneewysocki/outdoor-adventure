@@ -163,7 +163,7 @@ var database = firebase.database();
           var resultsString =
           "<div class='row trailResultsList'>" +
           "<div class='col'>" +
-          "<a target='_blank' href='" + trailURL + "'>" +
+          "<a target='_blank' href='" + trailURL + "'>" + "<i class='fas fa-bicycle'></i>" +
           "<h5><b>" + trailName + "</b></h5></a>" +
           "Rating: " + trailRating + "<br>" +
           trailDifficulty + "<br>" +
@@ -179,7 +179,7 @@ var database = firebase.database();
           "<img class='trailImage' src='" + trailThumb + "'>" +
           "</div>" +
           "<div class='col'>" +
-          "<a target='_blank' href='" + trailURL + "'>" +
+          "<a target='_blank' href='" + trailURL + "'>" + "<i class='fas fa-bicycle'></i>" +
           "<h5><b>" + trailName + "</b></h5></a>" +
           // "Rating: " + trailRating + "<br>" +
           "<div class='stars-empty'>" + 
