@@ -173,7 +173,7 @@ $('#favoriteBtn').on('click', favoritePlaces);
 
           //$(".stars-fill").css( "width", trailRatingPercent + "%");
 
-        if (trailThumb === "") {
+        if (trailThumb === "" || trailThumb === "https://images.singletracks.com/graphics/no_photo_750x500.png") {
           var resultsString =
           "<div class='row trailResultsList'>" +
           "<div class='col'>" +
@@ -184,7 +184,7 @@ $('#favoriteBtn').on('click', favoritePlaces);
           "Length: " + trailLength + "</p>" +
           "</div>" +
           "<div class='col-4 justify-content-center'>" + trailWeather + 
-        "</div>"
+        "</div>"  + "<div class='fav-button'>" + "<i class='fas fa-heart btn btn-sm' aria-hidden='false' id='favoriteBTN'></i>"+"</div>" +
         "</div>"
         } else {
           var resultsString =
@@ -202,8 +202,8 @@ $('#favoriteBtn').on('click', favoritePlaces);
           "<p>" + trailDifficulty + "<br>" +
           "Length: " + trailLength + "</p>" +
           "</div>" +
-          "<div class='col-4'>" + trailWeather + 
-        "</div>" + "<div class='button'>" + "<i class='fas fa-heart btn btn-primary btn-sm' aria-hidden='false' id='favoriteBTN'></i>"+"</div>" +
+          "<div class='col-3'>" + trailWeather + 
+        "</div>" + "<div class='fav-button'>" + "<i class='fas fa-heart btn btn-sm' aria-hidden='false' id='favoriteBTN'></i>"+"</div>" +
         "</div>"
         }
 

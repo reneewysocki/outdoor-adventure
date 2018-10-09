@@ -65,6 +65,7 @@ body, html {
   border: 1px solid #B64926;
   padding: 10px;
   background-color: #FFF9DE;
+  padding-left: 20px;
 } 
 
 .trailResultsTitle {
@@ -140,6 +141,16 @@ div.trails {
   font-family: 'Amatic SC', cursive;
   font-size: 20px;
   margin: 2px solid #B64926;
+}
+
+.fav-button {
+  color: #B64926;
+  margin-right: 10px;
+}
+
+.fav-button:hover {
+  color: #8E2800;
+  margin-right: 10px;
 }
 
 #address {
