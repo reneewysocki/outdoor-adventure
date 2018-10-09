@@ -103,3 +103,8 @@ div.trails {
 #return {
   width: 100%;
 }
+
+/* favorite button styling */
+#favoriteBTN {
+  float:left;
+}
