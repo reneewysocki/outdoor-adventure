@@ -12,6 +12,7 @@ body, html {
 #map {
    height: 100%; 
    width: 100%;
+   font-family: 'Font Awesome\ 5 Free';
 }
 
 #map-div {
@@ -174,6 +175,10 @@ div.trails {
   font-size: 35px;
 }
 
+.marker-img {
+  width: 150px;
+}
+
 legend { 
   font-family: 'Source Code Pro', monospace;
   font-size: 18px;
@@ -213,11 +218,11 @@ html::-webkit-scrollbar {
 html::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
   box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+  background-image: url("../images/background.jpg");
 }
 
 html::-webkit-scrollbar-thumb {
-background-image: url("../images/wood-grain.jpg");
-outline: 1px solid #468966;
+background-color: #468966;
 }
 
 html::-webkit-scrollbar-corner {
