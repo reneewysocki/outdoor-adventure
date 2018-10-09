@@ -92,8 +92,8 @@ var database = firebase.database();
       infowindow.setContent(contentString);
       infowindow.open(map, marker);
     });
-
-  }
+    
+    }
 
 
   //If user chooses to input location manually
@@ -254,6 +254,7 @@ var database = firebase.database();
             '</div>' +
             '<p id="firstHeading" class="firstHeading">' + trailName + '</p>' +
             '<div id="bodyContent">' +
+            `<img src=${trailThumb}>` +  
             '<p> Rating: ' + trailRating + '</p>' +
             '<p> Difficulty: ' + trailDifficulty + '</p>' +
             '<p> Length: ' + trailLength + '</p>' +
