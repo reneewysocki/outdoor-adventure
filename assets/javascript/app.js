@@ -27,72 +27,16 @@ var config = {
 
 firebase.initializeApp(config);
 
-///////////////////// Working Firebase Favorite Button Area ////////////////////////////////////
 // Variable to reference the firebase database
 var database = firebase.database();
-var favoriteRef = database.ref();
+var favoriteRef = database.ref('favorites');
 
 
-
-
-// working on this function to read the Google firebase database
-function favoritePlaces (trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent)
-{
-//   var id;
-//   var trailsidURL = "https://trailapi-trailapi.p.mashape.com/trails/{id}" +id;
-
-//   $.ajax({
-//   url: trailsURL,
-//   method: "GET",
-//   headers: {
-//      "X-Mashape-Key": "dZJGfLx5hNmshNppywXnsDamxgDPp1RzSf2jsnYe48JNSRCtXc",
-//       "Accept": "application/json"
-//     }
-//     }).then(function (response){
-//       id = response.data.id;
-//       console.log(trailsidURL);
-//       $('#favoriteBtn').on('click',function() {
-        
-//       });
-      
-//     });
- // Event handler for the favorite buttons to store to database
-    trailWeather(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent);
-
-   var favoriteTrail = {
-                      name: trailName,
-                      rating: trailRating,
-                      thumbnail: trailThumb,
-                      difficulty: trailDifficulty,
-                      length: trailLength,
-                      lat: trailPositionLat,
-                      lon: trailPositionLon,
-                      url:trailURL
-                    };
-
-   database.ref().push(favoriteTrail);
-   // Logs everything to console
-   console.log(favoriteTrail.id);
-   //pushes trail information to results panel   
-   $("#trails").append(favoriteTrail);
-
-}
-
-
+$("#results-page").hide();
+$("#front-page").show();
   
-
-
-// Handles the click function of the Favorite Places button then call the favorite places function
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-
-
-  $("#results-page").hide();
-  $("#front-page").show();
-  
-
-  // If user chooses geolocation 
-  function initMap() {
+// If user chooses geolocation 
+function initMap() {
     $("#results-page").show();
     $("#front-page").hide();
 
@@ -127,18 +71,18 @@ function favoritePlaces (trailName, trailRating, trailDifficulty, trailLength, t
       handleLocationError(false, infoWindow, map.getCenter());
     }
 
-  }
+}
 
-  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.setPosition(pos);
     infoWindow.setContent(browserHasGeolocation ?
       'Error: The Geolocation service failed.' :
       'Error: Your browser doesn\'t support geolocation.');
     infoWindow.open(map);
-  };
+};
 
-
-  function createMarker(trailPosition, trailName, contentString) {
+// Function to create the map markers and display on the map
+function createMarker(trailPosition, trailName, contentString) {
     var marker = new google.maps.Marker({
       position: trailPosition,
       title: trailName,
@@ -150,11 +94,10 @@ function favoritePlaces (trailName, trailRating, trailDifficulty, trailLength, t
       infowindow.open(map, marker);
     });
     
-    }
+}
 
-
-  //If user chooses to input location manually
-  function manualLocation ( ) {
+//If user chooses to input location manually
+function manualLocation ( ) {
     var address = document.getElementById('address').value;
     console.log(address);
 
@@ -192,12 +135,9 @@ function favoritePlaces (trailName, trailRating, trailDifficulty, trailLength, t
         getTrailInfo (currentLatitude, currentLongitude);
       });
     }
-  };
+};
 
-
-
-
-  function trailWeather(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent) {
+function trailWeather(trailName, trailRating, trailDifficulty, trailLength, trailThumb,trailPositionLat, trailPositionLon, trailURL, trailRatingPercent) {
     //gets weather for trails
     var weatherqueryURL = "http://api.openweathermap.org/data/2.5/find?lat=" + trailPositionLat + "&lon=" + trailPositionLon + "&cnt=1&appid=" + weatherAPIkey;
     
@@ -246,15 +186,36 @@ function favoritePlaces (trailName, trailRating, trailDifficulty, trailLength, t
           "Length: " + trailLength + "</p>" +
           "</div>" +
           "<div class='col-4'>" + trailWeather + 
-        "</div>" + "<i class='fas fa-heart btn btn-primary' id='favoriteBtn onclick='favoritePlaces()"+"</i>" +
+          "</div>"  +"<i class='fas fa-heart btn btn-primary' id='favoriteBtn'"+"</i>"
         "</div>"
         }
+       
+        $("#favoriteBtn").on("click", function () 
+        {
+          var favoriteTrail = 
+          {
+            name: trailName,
+            rating: trailRating,
+            thumbnail: trailThumb,
+            difficulty: trailDifficulty,
+            length: trailLength,
+            lat: trailPositionLat,
+            lon: trailPositionLon,
+            url:trailURL   
+          };
+          database.ref().set(favoriteTrail);
+    
+          // Logs everything to console
+          console.log(favoriteTrail);
+          
+        }); 
         //pushes trail information to results panel   
         $("#trails").append(resultsString); 
+        
       }
-    )};
+)};
 
-    function currentLocationWeather (currentLatitude, currentLongitude) {
+function currentLocationWeather (currentLatitude, currentLongitude) {
       var weatherqueryURL = "http://api.openweathermap.org/data/2.5/find?lat=" + currentLatitude + "&lon=" + currentLongitude + "&cnt=1&appid=" + weatherAPIkey;
         $.ajax({
           url: weatherqueryURL,
@@ -276,36 +237,38 @@ function favoritePlaces (trailName, trailRating, trailDifficulty, trailLength, t
           $("#weather").append("<div>Temperature: " + currentLocationTempFahr + "°</div>");
           
         });
-    }
+}
 
-    function getTrailInfo (currentLatitude, currentLongitude) {
+function getTrailInfo (currentLatitude, currentLongitude) {
       var trailsqueryURL = 'https://trailapi-trailapi.p.mashape.com/trails/explore/' + '?lat=' + currentLatitude + '%2C&lon=' + currentLongitude + '&per_page=100';
 
-      $.ajax({
-        url: trailsqueryURL,
-        method: "GET",
-        headers: {
-          "X-Mashape-Key": "dZJGfLx5hNmshNppywXnsDamxgDPp1RzSf2jsnYe48JNSRCtXc",
-          "Accept": "application/json"
-        }
-      }).then(function (response) {
-        console.log(response);
-        //plots trail points on map 
-        for (var i = 0; i < response.data.length; i++) 
-        {
-          // variable to call the trails api data
-          var trailName = response.data[i].name;
-          var trailDescription = response.data[i].description;
-          var trailPositionLat = parseFloat(response.data[i].lat);
-          var trailPositionLon = parseFloat(response.data[i].lon);
-          var trailPosition = { lat: trailPositionLat, lng: trailPositionLon };
-          var trailRating = response.data[i].rating;
-          var trailLength = response.data[i].length;
-          var trailDifficulty = response.data[i].difficulty;
-          var trailThumb = response.data[i].thumbnail;
-          var trailURL = response.data[i].url;
-          var trailRatingPercent = ((trailRating/5) * 100) + "%";
-          var markerString = '<div id="content">' +
+  $.ajax({
+      url: trailsqueryURL,
+      method: "GET",
+      headers: 
+      {
+        "X-Mashape-Key": "dZJGfLx5hNmshNppywXnsDamxgDPp1RzSf2jsnYe48JNSRCtXc",
+        "Accept": "application/json"
+      }
+  }).then(function (response) 
+  {
+    console.log(response);
+    //plots trail points on map 
+    for (var i = 0; i < response.data.length; i++) 
+    {
+      // variable to call the trails api data
+      var trailName = response.data[i].name;
+      var trailDescription = response.data[i].description;
+      var trailPositionLat = parseFloat(response.data[i].lat);
+      var trailPositionLon = parseFloat(response.data[i].lon);
+      var trailPosition = { lat: trailPositionLat, lng: trailPositionLon };
+      var trailRating = response.data[i].rating;
+      var trailLength = response.data[i].length;
+      var trailDifficulty = response.data[i].difficulty;
+      var trailThumb = response.data[i].thumbnail;
+      var trailURL = response.data[i].url;
+      var trailRatingPercent = ((trailRating/5) * 100) + "%";
+      var markerString = '<div id="content">' +
             '<div id="' + trailName + '">' +
             '</div>' +
             '<p id="firstHeading" class="firstHeading">' + trailName + '</p>' +
@@ -319,36 +282,25 @@ function favoritePlaces (trailName, trailRating, trailDifficulty, trailLength, t
             '</p>' +
             '</div>' +
             '</div>';
-            var favoriteTrail = {
-              name: trailName,
-              rating: trailRating,
-              thumbnail: trailThumb,
-              difficulty: trailDifficulty,
-              length: trailLength,
-              lat: trailPositionLat,
-              lon: trailPositionLon,
-              url:trailURL
+      var favoriteTrail = 
+      {
+          name: trailName,
+          rating: trailRating,
+          thumbnail: trailThumb,
+          difficulty: trailDifficulty,
+          length: trailLength,
+          lat: trailPositionLat,
+          lon: trailPositionLon,
+          url:trailURL
               
-            };
-              
-              $("#favoriteBtn").on("click", favoritePlaces = function() 
-              {
-                  
-                  database.ref().push(favoriteTrail);
-                  // Logs everything to console
-                  console.log(favoriteTrail.name);
-              });
-
-          createMarker(trailPosition, trailName, markerString);
-          trailWeather(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent)
-          favoritePlaces();
-        }  
-        
+      };
+      createMarker(trailPosition, trailName, markerString);
+      trailWeather(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent)
+       
+    }  
   });
-  
 }
- 
-
+  
 function refresh () {
   $("#results-page").hide();
   $("#front-page").show();
