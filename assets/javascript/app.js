@@ -1,5 +1,7 @@
 // Global variables
 var map, infoWindow, trails, places, geocoder;
+var iconBase = "C:/Users/Renee Wysocki/Desktop/coding-bootcamp/repositories/outdoor-adventure/assets/images/map-marker-50h.png"
+        
 
 var weatherAPIkey = "63ad6cfdee5ea624323fed889a2d525d";
 var nationalParksAPIkey = "Myd9CKal7VJIrMYyOYXHKQHZkEKIXZfMT7wT5xds";
@@ -26,8 +28,22 @@ var config = {
 };
 
 firebase.initializeApp(config);
-
+///////////////////// Working Firebase Favorite Button Area ////////////////////////////////////
+// Variable to reference the firebase database
 var database = firebase.database();
+var favoriteRef = database.ref('favorites');
+var trailRef = database.ref('favorites/trail')
+
+// working on this function to read the Google firebase database
+function favoritePlaces (id)
+{
+  
+
+}
+
+// Handles the click function of the Favorite Places button then call the favorite places function
+$('#favoriteBtn').on('click', favoritePlaces);
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 
   $("#results-page").hide();
@@ -85,6 +101,7 @@ var database = firebase.database();
     var marker = new google.maps.Marker({
       position: trailPosition,
       title: trailName,
+      icon: iconBase,
       map: map
     });
     var infowindow = new google.maps.InfoWindow
@@ -158,28 +175,13 @@ var database = firebase.database();
           + "<div class='trail-weather'>" + trailWeatherDis + " </div>";
 
           //$(".stars-fill").css( "width", trailRatingPercent + "%");
-
-        if (trailThumb === "") {
-          var resultsString =
-          "<div class='row trailResultsList'>" +
-          "<div class='col'>" +
-          "<a target='_blank' href='" + trailURL + "'>" +
-          "<h5><b>" + trailName + "</b></h5></a>" +
-          "Rating: " + trailRating + "<br>" +
-          trailDifficulty + "<br>" +
-          "Length: " + trailLength + "</p>" +
-          "</div>" +
-          "<div class='col-4 justify-content-center'>" + trailWeather + 
-        "</div>"
-        "</div>"
-        } else {
           var resultsString =
           "<div class='row trailResultsList'>" +
           "<div class='col-3'>" +
           "<img class='trailImage' src='" + trailThumb + "'>" +
           "</div>" +
-          "<div class='col'>" +
-          "<a target='_blank' href='" + trailURL + "'>" +
+          "<div class='col trail-info-results'>" +
+          "<a target='_blank' href='" + trailURL + "'>" + "<i class='fas fa-bicycle'></i>" +
           "<h5><b>" + trailName + "</b></h5></a>" +
           // "Rating: " + trailRating + "<br>" +
           "<div class='stars-empty'>" + 
@@ -188,12 +190,9 @@ var database = firebase.database();
           "<p>" + trailDifficulty + "<br>" +
           "Length: " + trailLength + "</p>" +
           "</div>" +
-          "<div class='col-4 justify-content-center'>" + trailWeather + 
+          "<div class='col-3'>" + trailWeather + 
+        "</div>" + "<div class='fav-button'>" + "<i class='fas fa-heart btn btn-sm' aria-hidden='false' id='favoriteBTN'></i>"+"</div>" +
         "</div>"
-        "</div>"
-        }
-
-        
         //pushes trail information to results panel   
         $("#trails").append(resultsString);
       }
@@ -237,7 +236,8 @@ var database = firebase.database();
       }).then(function (response) {
         console.log(response);
         //plots trail points on map 
-        for (var i = 0; i < response.data.length; i++) {
+        for (var i = 0; i < response.data.length; i++) 
+        {
           var trailName = response.data[i].name;
           var trailDescription = response.data[i].description;
           var trailPositionLat = parseFloat(response.data[i].lat);
@@ -254,7 +254,7 @@ var database = firebase.database();
             '</div>' +
             '<p id="firstHeading" class="firstHeading">' + trailName + '</p>' +
             '<div id="bodyContent">' +
-            `<img src=${trailThumb}>` +  
+            '<img src="' +  trailThumb + '" class="marker-img">' +
             '<p> Rating: ' + trailRating + '</p>' +
             '<p> Difficulty: ' + trailDifficulty + '</p>' +
             '<p> Length: ' + trailLength + '</p>' +
@@ -269,6 +269,8 @@ var database = firebase.database();
       });
     }
 
+
+
 function refresh () {
   $("#results-page").hide();
   $("#front-page").show();
@@ -278,3 +280,4 @@ function refresh () {
   $("#location").empty();
   $("#weather").empty();
 }
+
