@@ -606,7 +606,7 @@ function manualLocation ( ) {
     }
 };
 
-function trailWeather(trailName, trailRating, trailDifficulty, trailLength, trailThumb,trailPositionLat, trailPositionLon, trailURL, trailRatingPercent) 
+function trailWeather(trailName, trailDifficulty, trailLength, trailThumb,trailPositionLat, trailPositionLon, trailURL, trailRatingPercent) 
 {
     //gets weather for trails
     var weatherqueryURL = "http://api.openweathermap.org/data/2.5/find?lat=" + trailPositionLat + "&lon=" + trailPositionLon + "&cnt=1&appid=" + weatherAPIkey;
@@ -642,38 +642,54 @@ function trailWeather(trailName, trailRating, trailDifficulty, trailLength, trai
           "Length: " + trailLength + "</p>" +
           "</div>" +
           "<div class='col-3'>" + trailWeather + 
-          "</div>" + "<div class='fav-button favoriteBtn' onclick='favoritePlace()'>" + "<i class='fas fa-heart btn btn-sm' aria-hidden='false'></i>"+"</div>" +
+          "</div>" + "<div class='fav-button'><i class='fas fa-heart btn btn-sm onclick='getFavoriteTrail()' aria-hidden='false'></i>"+"</div>" +
         "</div>";
-
-        
-        
-      
         //pushes trail information to results panel   
         $("#trails").append(resultsString); 
-
-         // Button add all the trails around the area into the database instead of just one at a time.\
-        $('.favoriteBtn').on('click', favoritePlace = function () 
-        {
-
-          var favoriteTrail = 
-          {
-            name: trailName,
-            rating: trailRating,
-            thumbnail: trailThumb,
-            difficulty: trailDifficulty,
-            length: trailLength,
-            lat: trailPositionLat,
-            lon: trailPositionLon,
-            url:trailURL   
-          };
-          database.ref().set(favoriteTrail);
-    
-          // Logs everything to console
-          console.log(favoriteTrail);
-        });
-    });  
+    });
 }
-    
+
+// Function to store the favorite trails 
+function getFavoriteTrail ()   {
+  var trailsqueryURL = 'https://trailapi-trailapi.p.mashape.com/trails/explore/' + '?lat=' + currentLatitude + '%2C&lon=' + currentLongitude + '&per_page=100&radius=100';
+
+      $.ajax({
+        url: trailsqueryURL,
+        method: "GET",
+        headers: 
+        {
+          "X-Mashape-Key": "dZJGfLx5hNmshNppywXnsDamxgDPp1RzSf2jsnYe48JNSRCtXc",
+          "Accept": "application/json"
+        }
+    }).then(function (response) 
+    {  
+      // variable to call the trails api data
+      var trailName = response.data[i].name;
+      var trailDescription = response.data[i].description;
+      var trailPositionLat = parseFloat(response.data[i].lat);
+      var trailPositionLon = parseFloat(response.data[i].lon);
+      var trailPosition = { lat: trailPositionLat, lng: trailPositionLon };
+      var trailRating = response.data[i].rating;
+      var trailLength = response.data[i].length;
+      var trailDifficulty = response.data[i].difficulty;
+      var trailThumb = response.data[i].thumbnail;
+      var trailURL = response.data[i].url;
+      var trailRatingPercent = ((trailRating/5) * 100) + "%";  
+      var favoriteTrail = 
+        {
+          name: trailName,
+          rating: trailRating,
+          thumbnail: trailThumb,
+          difficulty: trailDifficulty,
+          length: trailLength,
+          lat: trailPositionLat,
+          lon: trailPositionLon,
+          url:trailURL   
+        };
+        database.ref().push(favoriteTrail);
+        console.log(favoriteTrail.name);
+    });
+}
 
 function currentLocationWeather (currentLatitude, currentLongitude) {
       var weatherqueryURL = "http://api.openweathermap.org/data/2.5/find?lat=" + currentLatitude + "&lon=" + currentLongitude + "&cnt=1&appid=" + weatherAPIkey;
@@ -741,7 +757,7 @@ function currentLocationWeather (currentLatitude, currentLongitude) {
             '</div>';
       
       createMarker(trailPosition, trailName, markerString);
-      trailWeather(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent)
+      trailWeather(trailName, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent)
     }  
   });
 }
