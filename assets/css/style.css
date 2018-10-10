@@ -211,6 +211,10 @@ background-color: #468966;
 outline: 1px solid #468966;
 }
 
+#trails::-webkit-scrollbar-corner {
+  background-image: url("../images/background.jpg");
+}
+
 html::-webkit-scrollbar {
   width: 1em;
 }
@@ -225,6 +229,4 @@ html::-webkit-scrollbar-thumb {
 background-color: #468966;
 }
 
-html::-webkit-scrollbar-corner {
-  background-color: #8E2800;
-}
+
