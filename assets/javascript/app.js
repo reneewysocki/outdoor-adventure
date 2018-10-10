@@ -683,7 +683,6 @@ $('#favoriteBtn').on('click', favoritePlaces);
           $("#weather").append("<img id='current-weather-icon' src='" + currentWeatherIconURL + "'>");
           $("#weather").append("<div>" + currentWeatherDis + " </div>");
           $("#weather").append("<div>Temperature: " + currentLocationTempFahr + "°</div>");
-          
         });
     }
 
