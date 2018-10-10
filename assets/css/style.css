@@ -62,6 +62,12 @@ body, html {
 
 .firstHeading {
   font-size: 24px;
+  font-family: 'Source Code Pro', monospace;
+  color: #8E2800;
+}
+
+.gm-style-iw {
+  font-family: 'Source Code Pro', monospace;
 }
 
 .trailResultsList {
@@ -177,6 +183,10 @@ div.trails {
 
 .marker-img {
   width: 150px;
+}
+
+#bodyContent {
+  font-family: 'Source Code Pro', monospace;
 }
 
 legend { 

@@ -673,17 +673,19 @@ function trailWeather(trailName, trailDifficulty, trailLength, trailThumb,trailP
 //     }).then(function (response) 
 //     {  
 //       // variable to call the trails api data
-//       var trailName = response.data.name;
-//       var trailDescription = response.data.description;
+//       for (var i = 0; i < response.data.length; i+)// 
+//       {
+//       var trailName = response.data[i].name;
+//       var trailDescription = response.data[i].description;
 //       var trailPositionLat = parseFloat(response.data.lat);
 //       var trailPositionLon = parseFloat(response.data.lon);
 //       var trailPosition = { lat: trailPositionLat, lng: trailPositionLon };
-//       var trailRating = response.data.rating;
-//       var trailLength = response.data.length;
-//       var trailDifficulty = response.data.difficulty;
-//       var trailThumb = response.data.thumbnail;
-//       var trailURL = response.data.url;
-//       var trailRatingPercent = ((trailRating/5) * 100) + "%";  
+//       var trailRating = response.data[i].rating;
+//       var trailLength = response.data[i].length;
+//       var trailDifficulty = response.data[i].difficulty;
+//       var trailThumb = response.data[i].thumbnail;
+//       var trailURL = response.data[i].url;
+//       var trailRatingPercent = ((trailRating/5) * 100) + "%"; } 
 //       var favoriteTrail = 
 //       {
 //         name: trailName,
@@ -700,7 +702,7 @@ function trailWeather(trailName, trailDifficulty, trailLength, trailThumb,trailP
 //         console.log(favoriteTrail.name);  
 //       });
 //     });
-    
+//    
 // }
 
 function currentLocationWeather (currentLatitude, currentLongitude) {
