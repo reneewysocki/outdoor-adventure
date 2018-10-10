@@ -1,5 +1,7 @@
 // Global variables
 var map, infoWindow, trails, places, geocoder;
+var iconBase = "./assets/images/map-marker.png"
+        
 
 var weatherAPIkey = "63ad6cfdee5ea624323fed889a2d525d";
 var nationalParksAPIkey = "Myd9CKal7VJIrMYyOYXHKQHZkEKIXZfMT7wT5xds";
@@ -42,7 +44,240 @@ function initMap() {
 
     map = new google.maps.Map(document.getElementById('map'), {
       center: { lat: 32.8448345, lng: -96.7844135 },
-      zoom: 11,
+      zoom: 10,
+      styles: [
+        {
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#ebe3cd"
+            }
+          ]
+        },
+        {
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#523735"
+            }
+          ]
+        },
+        {
+          "elementType": "labels.text.stroke",
+          "stylers": [
+            {
+              "color": "#f5f1e6"
+            }
+          ]
+        },
+        {
+          "featureType": "administrative",
+          "elementType": "geometry.stroke",
+          "stylers": [
+            {
+              "color": "#c9b2a6"
+            }
+          ]
+        },
+        {
+          "featureType": "administrative.land_parcel",
+          "elementType": "geometry.stroke",
+          "stylers": [
+            {
+              "color": "#dcd2be"
+            }
+          ]
+        },
+        {
+          "featureType": "administrative.land_parcel",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#ae9e90"
+            }
+          ]
+        },
+        {
+          "featureType": "landscape.natural",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#dfd2ae"
+            }
+          ]
+        },
+        {
+          "featureType": "poi",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#dfd2ae"
+            }
+          ]
+        },
+        {
+          "featureType": "poi",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#93817c"
+            }
+          ]
+        },
+        {
+          "featureType": "poi.park",
+          "elementType": "geometry.fill",
+          "stylers": [
+            {
+              "color": "#a5b076"
+            }
+          ]
+        },
+        {
+          "featureType": "poi.park",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#447530"
+            }
+          ]
+        },
+        {
+          "featureType": "road",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#f5f1e6"
+            }
+          ]
+        },
+        {
+          "featureType": "road.arterial",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#fdfcf8"
+            }
+          ]
+        },
+        {
+          "featureType": "road.highway",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#f8c967"
+            }
+          ]
+        },
+        {
+          "featureType": "road.highway",
+          "elementType": "geometry.fill",
+          "stylers": [
+            {
+              "color": "#ffb03b"
+            }
+          ]
+        },
+        {
+          "featureType": "road.highway",
+          "elementType": "geometry.stroke",
+          "stylers": [
+            {
+              "color": "#ffb03b"
+            }
+          ]
+        },
+        {
+          "featureType": "road.highway.controlled_access",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#e98d58"
+            }
+          ]
+        },
+        {
+          "featureType": "road.highway.controlled_access",
+          "elementType": "geometry.fill",
+          "stylers": [
+            {
+              "color": "#ffb03b"
+            }
+          ]
+        },
+        {
+          "featureType": "road.highway.controlled_access",
+          "elementType": "geometry.stroke",
+          "stylers": [
+            {
+              "color": "#b64926"
+            }
+          ]
+        },
+        {
+          "featureType": "road.local",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#806b63"
+            }
+          ]
+        },
+        {
+          "featureType": "transit.line",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#dfd2ae"
+            }
+          ]
+        },
+        {
+          "featureType": "transit.line",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#8f7d77"
+            }
+          ]
+        },
+        {
+          "featureType": "transit.line",
+          "elementType": "labels.text.stroke",
+          "stylers": [
+            {
+              "color": "#ebe3cd"
+            }
+          ]
+        },
+        {
+          "featureType": "transit.station",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#dfd2ae"
+            }
+          ]
+        },
+        {
+          "featureType": "water",
+          "elementType": "geometry.fill",
+          "stylers": [
+            {
+              "color": "#b9d3c2"
+            }
+          ]
+        },
+        {
+          "featureType": "water",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#92998d"
+            }
+          ]
+        }
+      ]
     });
     infoWindow = new google.maps.InfoWindow;
 
@@ -86,6 +321,7 @@ function createMarker(trailPosition, trailName, contentString) {
     var marker = new google.maps.Marker({
       position: trailPosition,
       title: trailName,
+      icon: iconBase,
       map: map
     });
     var infowindow = new google.maps.InfoWindow
@@ -101,14 +337,247 @@ function manualLocation ( ) {
     var address = document.getElementById('address').value;
     console.log(address);
 
-    if (address === "City, State" || address === null || address === undefined || address === "") {
+    if (address === null || address === undefined || address === "") {
       $('#modal').modal('show');
     } else {
       $("#results-page").show();
       $("#front-page").hide();
       map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 32.8448345, lng: -96.7844135 },
-        zoom: 11,
+        zoom: 10,
+        styles: [
+          {
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#ebe3cd"
+              }
+            ]
+          },
+          {
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#523735"
+              }
+            ]
+          },
+          {
+            "elementType": "labels.text.stroke",
+            "stylers": [
+              {
+                "color": "#f5f1e6"
+              }
+            ]
+          },
+          {
+            "featureType": "administrative",
+            "elementType": "geometry.stroke",
+            "stylers": [
+              {
+                "color": "#c9b2a6"
+              }
+            ]
+          },
+          {
+            "featureType": "administrative.land_parcel",
+            "elementType": "geometry.stroke",
+            "stylers": [
+              {
+                "color": "#dcd2be"
+              }
+            ]
+          },
+          {
+            "featureType": "administrative.land_parcel",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#ae9e90"
+              }
+            ]
+          },
+          {
+            "featureType": "landscape.natural",
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#dfd2ae"
+              }
+            ]
+          },
+          {
+            "featureType": "poi",
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#dfd2ae"
+              }
+            ]
+          },
+          {
+            "featureType": "poi",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#93817c"
+              }
+            ]
+          },
+          {
+            "featureType": "poi.park",
+            "elementType": "geometry.fill",
+            "stylers": [
+              {
+                "color": "#a5b076"
+              }
+            ]
+          },
+          {
+            "featureType": "poi.park",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#447530"
+              }
+            ]
+          },
+          {
+            "featureType": "road",
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#f5f1e6"
+              }
+            ]
+          },
+          {
+            "featureType": "road.arterial",
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#fdfcf8"
+              }
+            ]
+          },
+          {
+            "featureType": "road.highway",
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#f8c967"
+              }
+            ]
+          },
+          {
+            "featureType": "road.highway",
+            "elementType": "geometry.fill",
+            "stylers": [
+              {
+                "color": "#ffb03b"
+              }
+            ]
+          },
+          {
+            "featureType": "road.highway",
+            "elementType": "geometry.stroke",
+            "stylers": [
+              {
+                "color": "#ffb03b"
+              }
+            ]
+          },
+          {
+            "featureType": "road.highway.controlled_access",
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#e98d58"
+              }
+            ]
+          },
+          {
+            "featureType": "road.highway.controlled_access",
+            "elementType": "geometry.fill",
+            "stylers": [
+              {
+                "color": "#ffb03b"
+              }
+            ]
+          },
+          {
+            "featureType": "road.highway.controlled_access",
+            "elementType": "geometry.stroke",
+            "stylers": [
+              {
+                "color": "#b64926"
+              }
+            ]
+          },
+          {
+            "featureType": "road.local",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#806b63"
+              }
+            ]
+          },
+          {
+            "featureType": "transit.line",
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#dfd2ae"
+              }
+            ]
+          },
+          {
+            "featureType": "transit.line",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#8f7d77"
+              }
+            ]
+          },
+          {
+            "featureType": "transit.line",
+            "elementType": "labels.text.stroke",
+            "stylers": [
+              {
+                "color": "#ebe3cd"
+              }
+            ]
+          },
+          {
+            "featureType": "transit.station",
+            "elementType": "geometry",
+            "stylers": [
+              {
+                "color": "#dfd2ae"
+              }
+            ]
+          },
+          {
+            "featureType": "water",
+            "elementType": "geometry.fill",
+            "stylers": [
+              {
+                "color": "#b9d3c2"
+              }
+            ]
+          },
+          {
+            "featureType": "water",
+            "elementType": "labels.text.fill",
+            "stylers": [
+              {
+                "color": "#92998d"
+              }
+            ]
+          }
+        ]
       });
       infoWindow = new google.maps.InfoWindow;
   
@@ -120,7 +589,7 @@ function manualLocation ( ) {
         console.log(response);
         var currentLatitude = response.results[0].geometry.location.lat
         var currentLongitude = response.results[0].geometry.location.lng
-        var currentLocationName = response.results[0].address_components[0].long_name
+        var currentLocationName = response.results[0].formatted_address
         console.log(currentLatitude);
         console.log(currentLongitude);
         var pos = {
@@ -155,28 +624,13 @@ function trailWeather(trailName, trailRating, trailDifficulty, trailLength, trai
           + "<div class='trail-weather'>" + trailWeatherDis + " </div>";
 
           //$(".stars-fill").css( "width", trailRatingPercent + "%");
-
-        if (trailThumb === "") {
-          var resultsString =
-          "<div class='row trailResultsList'>" +
-          "<div class='col'>" +
-          "<a target='_blank' href='" + trailURL + "'>" +
-          "<h5><b>" + trailName + "</b></h5></a>" +
-          "Rating: " + trailRating + "<br>" +
-          trailDifficulty + "<br>" +
-          "Length: " + trailLength + "</p>" +
-          "</div>" +
-          "<div class='col-4 justify-content-center'>" + trailWeather + 
-        "</div>"
-        "</div>"
-        } else {
           var resultsString =
           "<div class='row trailResultsList'>" +
           "<div class='col-3'>" +
           "<img class='trailImage' src='" + trailThumb + "'>" +
           "</div>" +
-          "<div class='col'>" +
-          "<a target='_blank' href='" + trailURL + "'>" +
+          "<div class='col trail-info-results'>" +
+          "<a target='_blank' href='" + trailURL + "'>" + "<i class='fas fa-bicycle'></i>" +
           "<h5><b>" + trailName + "</b></h5></a>" +
           // "Rating: " + trailRating + "<br>" +
           "<div class='stars-empty'>" + 
@@ -186,9 +640,10 @@ function trailWeather(trailName, trailRating, trailDifficulty, trailLength, trai
           "Length: " + trailLength + "</p>" +
           "</div>" +
           "<div class='col-4'>" + trailWeather + 
-          "</div>"  +"<i class='fas fa-heart btn btn-primary' id='favoriteBtn'"+"</i>"
+          "</div>"  +"<div class='col-3'>" + trailWeather + 
+          "</div>" + "<div class='fav-button'>" + "<i class='fas fa-heart btn btn-sm' aria-hidden='false' id='favoriteBTN'></i>"+"</div>" +
         "</div>"
-        }
+        });
        
         $("#favoriteBtn").on("click", function () 
         {
@@ -209,11 +664,11 @@ function trailWeather(trailName, trailRating, trailDifficulty, trailLength, trai
           console.log(favoriteTrail);
           
         }); 
+          
         //pushes trail information to results panel   
         $("#trails").append(resultsString); 
         
       }
-)};
 
 function currentLocationWeather (currentLatitude, currentLongitude) {
       var weatherqueryURL = "http://api.openweathermap.org/data/2.5/find?lat=" + currentLatitude + "&lon=" + currentLongitude + "&cnt=1&appid=" + weatherAPIkey;
@@ -225,9 +680,7 @@ function currentLocationWeather (currentLatitude, currentLongitude) {
           // gets location name, temperature, weather icon and pushes it to html 
           var currentLocationName = response.list[0].name;
           var currentLocationTempKelvin = response.list[0].main.temp;
-          console.log(currentLocationTempKelvin);
           var currentLocationTempFahr = Math.floor(((currentLocationTempKelvin - 273.15) * 1.8) + 32)
-          console.log(currentLocationTempFahr);
           var currentWeatherDis = response.list[0].weather[0].description;
           var currentWeatherIcon = response.list[0].weather[0].icon;
           var currentWeatherIconURL = "http://openweathermap.org/img/w/" + currentWeatherIcon + ".png";
@@ -239,8 +692,8 @@ function currentLocationWeather (currentLatitude, currentLongitude) {
         });
 }
 
-function getTrailInfo (currentLatitude, currentLongitude) {
-      var trailsqueryURL = 'https://trailapi-trailapi.p.mashape.com/trails/explore/' + '?lat=' + currentLatitude + '%2C&lon=' + currentLongitude + '&per_page=100';
+    function getTrailInfo (currentLatitude, currentLongitude) {
+      var trailsqueryURL = 'https://trailapi-trailapi.p.mashape.com/trails/explore/' + '?lat=' + currentLatitude + '%2C&lon=' + currentLongitude + '&per_page=100&radius=100';
 
   $.ajax({
       url: trailsqueryURL,
@@ -273,7 +726,7 @@ function getTrailInfo (currentLatitude, currentLongitude) {
             '</div>' +
             '<p id="firstHeading" class="firstHeading">' + trailName + '</p>' +
             '<div id="bodyContent">' +
-            `<img src=${trailThumb}>` +  
+            '<img src="' +  trailThumb + '" class="marker-img">' +
             '<p> Rating: ' + trailRating + '</p>' +
             '<p> Difficulty: ' + trailDifficulty + '</p>' +
             '<p> Length: ' + trailLength + '</p>' +
@@ -310,4 +763,6 @@ function refresh () {
   $("#location").empty();
   $("#weather").empty();
 }
+
+
 
