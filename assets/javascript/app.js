@@ -1,7 +1,7 @@
 // Global variables
 var map, infoWindow, trails, places, geocoder;
 var iconBase = "./assets/images/map-marker.png"
-        
+var openInfoWindows = [];
 
 var weatherAPIkey = "63ad6cfdee5ea624323fed889a2d525d";
 var nationalParksAPIkey = "Myd9CKal7VJIrMYyOYXHKQHZkEKIXZfMT7wT5xds";
@@ -328,6 +328,10 @@ function createMarker(trailPosition, trailName, contentString) {
     google.maps.event.addListener(marker, 'click', function () {
       infowindow.setContent(contentString);
       infowindow.open(map, marker);
+      openInfoWindows.forEach(iw => {
+        iw.close();
+      });
+      openInfoWindows.push(infowindow);
     });
     
 }
