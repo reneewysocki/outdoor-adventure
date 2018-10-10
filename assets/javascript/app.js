@@ -661,6 +661,8 @@ $('#favoriteBtn').on('click', favoritePlaces);
         "</div>"
         //pushes trail information to results panel   
         $("#trails").append(resultsString);
+        //TESTING THIS COMMENT TRAILS SHOULD STRING HERE
+
       }
     
     )};
