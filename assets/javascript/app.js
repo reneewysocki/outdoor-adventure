@@ -642,30 +642,34 @@ function trailWeather(trailName, trailRating, trailDifficulty, trailLength, trai
           "Length: " + trailLength + "</p>" +
           "</div>" +
           "<div class='col-3'>" + trailWeather + 
-          "</div>" + "<div class='fav-button' onclick='favoritePlaces()'>" + "<i class='fas fa-heart btn btn-sm' aria-hidden='true'>"+"</i>"+"</div>" +
+          "</div>" + "<div class='fav-button favoriteBtn'>" + "<i class='fas fa-heart btn btn-sm' aria-hidden='false'></i>"+"</div>" +
         "</div>";
 
-          
-
-        function favoritePlaces()
+        
+        
+       
+        $('.favoriteBtn').on('click', function () 
         {
-         
+
           var favoriteTrail = 
-            {
-              name: trailName,
-              rating: trailRating,
-              thumbnail: trailThumb,
-              difficulty: trailDifficulty,
-              length: trailLength,
-              lat: trailPositionLat,
-              lon: trailPositionLon,
-              url:trailURL   
-            };
-            
-            database.ref().push(favoriteTrail)
+          {
+            name: trailName,
+            rating: trailRating,
+            thumbnail: trailThumb,
+            difficulty: trailDifficulty,
+            length: trailLength,
+            lat: trailPositionLat,
+            lon: trailPositionLon,
+            url:trailURL   
+          };
+          database.ref().set(favoriteTrail);
+    
           // Logs everything to console
-          console.log(favoriteTrail.name);
-        }
+          console.log(favoriteTrail);
+        });
+        
+         
+
         //pushes trail information to results panel   
         $("#trails").append(resultsString); 
     });  
