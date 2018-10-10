@@ -17,30 +17,73 @@ var googleAPIKey = "AIzaSyCGcE5jmaNXlSOnkF9hz6oYTFhQl3qPFaU";
 
 //initialize firebase
 var config = {
-  apiKey: "AIzaSyCGcE5jmaNXlSOnkF9hz6oYTFhQl3qPFaU",
-  authDomain: "outdoor-adventure-dc61e.firebaseapp.com",
-  databaseURL: "https://outdoor-adventure-dc61e.firebaseio.com",
-  projectId: "outdoor-adventure-dc61e",
-  storageBucket: "",
-  messagingSenderId: "1061119694550"
+  apiKey: "AIzaSyBORNjA5-m2BsCc9HESu5po2VRfx30lUx4",
+    authDomain: "outdoor-adventure-dc61e.firebaseapp.com",
+    databaseURL: "https://outdoor-adventure-dc61e.firebaseio.com",
+    projectId: "outdoor-adventure-dc61e",
+    storageBucket: "outdoor-adventure-dc61e.appspot.com",
+    messagingSenderId: "1061119694550"
 };
 
 firebase.initializeApp(config);
+
 ///////////////////// Working Firebase Favorite Button Area ////////////////////////////////////
 // Variable to reference the firebase database
 var database = firebase.database();
-var favoriteRef = database.ref('favorites');
-var trailRef = database.ref('favorites/trail')
+var favoriteRef = database.ref();
+
+
+
 
 // working on this function to read the Google firebase database
-function favoritePlaces (id)
+function favoritePlaces (trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent)
 {
-  
+//   var id;
+//   var trailsidURL = "https://trailapi-trailapi.p.mashape.com/trails/{id}" +id;
+
+//   $.ajax({
+//   url: trailsURL,
+//   method: "GET",
+//   headers: {
+//      "X-Mashape-Key": "dZJGfLx5hNmshNppywXnsDamxgDPp1RzSf2jsnYe48JNSRCtXc",
+//       "Accept": "application/json"
+//     }
+//     }).then(function (response){
+//       id = response.data.id;
+//       console.log(trailsidURL);
+//       $('#favoriteBtn').on('click',function() {
+        
+//       });
+      
+//     });
+ // Event handler for the favorite buttons to store to database
+    trailWeather(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent);
+
+   var favoriteTrail = {
+                      name: trailName,
+                      rating: trailRating,
+                      thumbnail: trailThumb,
+                      difficulty: trailDifficulty,
+                      length: trailLength,
+                      lat: trailPositionLat,
+                      lon: trailPositionLon,
+                      url:trailURL
+                    };
+
+   database.ref().push(favoriteTrail);
+   // Logs everything to console
+   console.log(favoriteTrail.id);
+   //pushes trail information to results panel   
+   $("#trails").append(favoriteTrail);
 
 }
 
+
+  
+
+
 // Handles the click function of the Favorite Places button then call the favorite places function
-$('#favoriteBtn').on('click', favoritePlaces);
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -203,15 +246,12 @@ $('#favoriteBtn').on('click', favoritePlaces);
           "Length: " + trailLength + "</p>" +
           "</div>" +
           "<div class='col-4'>" + trailWeather + 
-        "</div>" + "<div class='button'>" + "<i class='fas fa-heart btn btn-primary btn-sm' aria-hidden='false' id='favoriteBTN'></i>"+"</div>" +
+        "</div>" + "<i class='fas fa-heart btn btn-primary' id='favoriteBtn onclick='favoritePlaces()"+"</i>" +
         "</div>"
         }
-
-        
         //pushes trail information to results panel   
-        $("#trails").append(resultsString);
+        $("#trails").append(resultsString); 
       }
-    
     )};
 
     function currentLocationWeather (currentLatitude, currentLongitude) {
@@ -253,6 +293,7 @@ $('#favoriteBtn').on('click', favoritePlaces);
         //plots trail points on map 
         for (var i = 0; i < response.data.length; i++) 
         {
+          // variable to call the trails api data
           var trailName = response.data[i].name;
           var trailDescription = response.data[i].description;
           var trailPositionLat = parseFloat(response.data[i].lat);
@@ -278,13 +319,35 @@ $('#favoriteBtn').on('click', favoritePlaces);
             '</p>' +
             '</div>' +
             '</div>';
+            var favoriteTrail = {
+              name: trailName,
+              rating: trailRating,
+              thumbnail: trailThumb,
+              difficulty: trailDifficulty,
+              length: trailLength,
+              lat: trailPositionLat,
+              lon: trailPositionLon,
+              url:trailURL
+              
+            };
+              
+              $("#favoriteBtn").on("click", favoritePlaces = function() 
+              {
+                  
+                  database.ref().push(favoriteTrail);
+                  // Logs everything to console
+                  console.log(favoriteTrail.name);
+              });
+
           createMarker(trailPosition, trailName, markerString);
-          trailWeather(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent);
-        }
-      });
-    }
-
-
+          trailWeather(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent)
+          favoritePlaces();
+        }  
+        
+  });
+  
+}
+ 
 
 function refresh () {
   $("#results-page").hide();
