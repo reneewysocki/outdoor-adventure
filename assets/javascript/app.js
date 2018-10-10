@@ -606,14 +606,16 @@ function manualLocation ( ) {
     }
 };
 
-function trailWeather(trailName, trailRating, trailDifficulty, trailLength, trailThumb,trailPositionLat, trailPositionLon, trailURL, trailRatingPercent) {
+function trailWeather(trailName, trailRating, trailDifficulty, trailLength, trailThumb,trailPositionLat, trailPositionLon, trailURL, trailRatingPercent) 
+{
     //gets weather for trails
     var weatherqueryURL = "http://api.openweathermap.org/data/2.5/find?lat=" + trailPositionLat + "&lon=" + trailPositionLon + "&cnt=1&appid=" + weatherAPIkey;
     
     $.ajax({
       url: weatherqueryURL,
       method: "GET"
-    }).then(function (response) {
+    }).then(function (response) 
+    {
           var trailTempKelvin = response.list[0].main.temp;
           var trailTempFahr = Math.floor(((trailTempKelvin - 273.15) * 1.8) + 32)
           var trailWeatherDis = response.list[0].weather[0].description;
@@ -639,36 +641,36 @@ function trailWeather(trailName, trailRating, trailDifficulty, trailLength, trai
           "<p>" + trailDifficulty + "<br>" +
           "Length: " + trailLength + "</p>" +
           "</div>" +
-          "<div class='col-4'>" + trailWeather + 
-          "</div>"  +"<div class='col-3'>" + trailWeather + 
-          "</div>" + "<div class='fav-button'>" + "<i class='fas fa-heart btn btn-sm' aria-hidden='false' id='favoriteBTN'></i>"+"</div>" +
-        "</div>"
-        });
-       
-        $("#favoriteBtn").on("click", function () 
+          "<div class='col-3'>" + trailWeather + 
+          "</div>" + "<div class='fav-button' onclick='favoritePlaces()'>" + "<i class='fas fa-heart btn btn-sm' aria-hidden='true'>"+"</i>"+"</div>" +
+        "</div>";
+
+          
+
+        function favoritePlaces()
         {
+         
           var favoriteTrail = 
-          {
-            name: trailName,
-            rating: trailRating,
-            thumbnail: trailThumb,
-            difficulty: trailDifficulty,
-            length: trailLength,
-            lat: trailPositionLat,
-            lon: trailPositionLon,
-            url:trailURL   
-          };
-          database.ref().set(favoriteTrail);
-    
+            {
+              name: trailName,
+              rating: trailRating,
+              thumbnail: trailThumb,
+              difficulty: trailDifficulty,
+              length: trailLength,
+              lat: trailPositionLat,
+              lon: trailPositionLon,
+              url:trailURL   
+            };
+            
+            database.ref().push(favoriteTrail)
           // Logs everything to console
-          console.log(favoriteTrail);
-          
-        }); 
-          
+          console.log(favoriteTrail.name);
+        }
         //pushes trail information to results panel   
         $("#trails").append(resultsString); 
-        
-      }
+    });  
+}
+    
 
 function currentLocationWeather (currentLatitude, currentLongitude) {
       var weatherqueryURL = "http://api.openweathermap.org/data/2.5/find?lat=" + currentLatitude + "&lon=" + currentLongitude + "&cnt=1&appid=" + weatherAPIkey;
@@ -735,25 +737,13 @@ function currentLocationWeather (currentLatitude, currentLongitude) {
             '</p>' +
             '</div>' +
             '</div>';
-      var favoriteTrail = 
-      {
-          name: trailName,
-          rating: trailRating,
-          thumbnail: trailThumb,
-          difficulty: trailDifficulty,
-          length: trailLength,
-          lat: trailPositionLat,
-          lon: trailPositionLon,
-          url:trailURL
-              
-      };
+      
       createMarker(trailPosition, trailName, markerString);
       trailWeather(trailName, trailRating, trailDifficulty, trailLength, trailThumb, trailPositionLat, trailPositionLon, trailURL, trailRatingPercent)
-       
     }  
   });
 }
-  
+
 function refresh () {
   $("#results-page").hide();
   $("#front-page").show();
