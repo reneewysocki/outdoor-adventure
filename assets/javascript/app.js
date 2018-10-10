@@ -647,7 +647,7 @@ function trailWeather(trailName, trailRating, trailDifficulty, trailLength, trai
 
         
         
-       
+       // Button add all the trails around the area into the database instead of just one at a time.
         $('.favoriteBtn').on('click', function () 
         {
 
